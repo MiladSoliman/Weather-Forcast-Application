@@ -2,4 +2,26 @@
     <string name="app_name">Wethar Application</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_location">Location</string>
+    <string name="tv_language">Language</string>
+    <string name="tv_windSpeed">Wind Speed</string>
+    <string name="tv_tempreture">Tempreture</string>
+    <string name="radio_Gps">GPS</string>
+    <string name="radio_Map">Map</string>
+    <string name="radio_english">English</string>
+    <string name="radio_arabic">Arabic</string>
+    <string name="radio_meter">Meter/Sec</string>
+    <string name="radio_mile">Mile/Hour</string>
+    <string name="radio_cel">Celsius</string>
+    <string name="radio_kel">Kelvin</string>
+    <string name="radio_fah">Fahrenheit</string>
+    <string name="tv_Humidity">Humidity</string>
+    <string name="tv_Pressure">Pressure</string>
+    <string name="tv_Visability">Visability</string>
+    <string name="tv_WindSpeed">Wind Speed</string>
+    <string name="tv_Cloud">Cloud</string>
+    <string name="tv_UV">UV</string>
+
+
+
 </resources>
