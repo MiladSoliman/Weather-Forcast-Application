@@ -3,7 +3,7 @@ package com.example.wetharapplication.network
 import com.example.wetharapplication.model.MyResponse
 
 class WeatherClient : RemoteSource {
-lateinit var myResponse :MyResponse
+    lateinit var myResponse :MyResponse
 
     companion object {
         @Volatile
