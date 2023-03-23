@@ -5,7 +5,7 @@
     <string name="tv_location">Location</string>
     <string name="tv_language">Language</string>
     <string name="tv_windSpeed">Wind Speed</string>
-    <string name="tv_tempreture">Tempreture</string>
+    <string name="tv_tempreture">Temperature</string>
     <string name="radio_Gps">GPS</string>
     <string name="radio_Map">Map</string>
     <string name="radio_english">English</string>
