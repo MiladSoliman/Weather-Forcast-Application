@@ -41,9 +41,10 @@ class DailyAdapter (private val dailyWeather: List<Daily> , var context: Context
         holder.binding.tvDay.text = day
         Glide.with(context).load("https://openweathermap.org/img/wn/${currentDay.weather.get(0).icon}@2x.png").into(binding.dayilyImageView)
         holder.binding.tvDayDesc.text =currentDay.weather.get(0).description
-        holder.binding.tvDailyMaxDegree.text = "/"+currentDay.temp.max.toString()
-        holder.binding.tvDayMinDegree.text = currentDay.temp.min.toString()
+       // holder.binding.tvDailyMaxDegree.text = "/"+currentDay.temp.max.toString()
+        holder.binding.tvDayMinDegree.text = currentDay.temp.min.toString() +  "/" +currentDay.temp.max.toString() + "K"
 
+        //tv_daily_max_degree
     }
 
     override fun getItemCount(): Int {

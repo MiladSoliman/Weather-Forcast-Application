@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import com.example.wetharapplication.R
+import com.example.wetharapplication.databinding.FragmentFavoriteBinding
 
 
 class FavoriteFragment : Fragment() {
-
+lateinit var binding: FragmentFavoriteBinding
 
 
     override fun onCreateView(
@@ -17,8 +19,17 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite, container, false)
+        binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+       binding.favFAB.setOnClickListener {
+           Navigation.findNavController(view).navigate(R.id.Fav_to_map)
+       }
+    }
+
 
 
 }

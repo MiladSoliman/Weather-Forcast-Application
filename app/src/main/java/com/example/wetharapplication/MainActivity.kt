@@ -34,12 +34,6 @@ class MainActivity : AppCompatActivity() {
         actionBar!!.setDisplayHomeAsUpEnabled(true)
 
     }
-
-   /* override fun onSupportNavigateUp(): Boolean {
-        var navController = findNavController(R.id.nav_host_fragment)
-        return navController.navigateUp(appBarConfigartion)  || super.onSupportNavigateUp()
-
-    }*/
    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {

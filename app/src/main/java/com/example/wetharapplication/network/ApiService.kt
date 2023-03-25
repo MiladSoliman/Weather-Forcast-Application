@@ -11,5 +11,5 @@ interface ApiService {
                         , @Query("lon") lon: Double,
                          @Query("lang") lang: String = "en",
                         @Query("units") units :String = "metric"
-                        ,@Query("appid") appid:String = "48d4992301c3d1d2f536835ad952332f" ): Response<MyResponse>
+                        ,@Query("appid") appid:String = "04140387a0c9b9535e981afe74e9ac2a" ): Response<MyResponse>
 }

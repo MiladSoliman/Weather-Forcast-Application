@@ -32,7 +32,7 @@ class HomeViewModel (private val  myrepo: RepositoryInterface ,  private val con
         var location = Location(context)
         location.getLastLocation()
         location.myLocation.observe(context as LifecycleOwner){
-            Log.i("my locatio" , "" +it.get(0) + it.get(1))
+            Log.i("my location" , "" +it.get(0) + it.get(1))
             getResonse(it.get(0) , it.get(1))
                   }
     }

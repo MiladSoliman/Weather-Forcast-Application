@@ -60,9 +60,9 @@ class HomeFragment : Fragment() {
                 Log.i("ya rab", "" + response.timezone)
                 binding.tvCity.text = response.timezone
                 binding.tvDescription.text = response.current.weather.get(0).description
-                var simpleDate = SimpleDateFormat("dd/M/yyyy")
+                var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ")
                 var currentDate = simpleDate.format(response.current.dt * 1000L)
-                binding.tvDate.text = currentDate.toString()
+                binding.tvDate.text= currentDate.toString()
                 binding.tvHomedegree.text = response.current.temp.toString()
                 binding.tvEditHumidity.text = response.current.humidity.toString()
                 binding.tvEditCloud.text = response.current.clouds.toString()
@@ -75,6 +75,7 @@ class HomeFragment : Fragment() {
                     .into(binding.homeImage)
                 Log.i("dayicon", "" + response.current.weather.get(0).icon)
                 hoursList = response.hourly
+                Log.i("Ehab" , response.hourly.toString())
                 binding.hourlyRecyclerview.apply {
                     adapter = HourlyAdapter(hoursList, context)
                     layoutManager =
