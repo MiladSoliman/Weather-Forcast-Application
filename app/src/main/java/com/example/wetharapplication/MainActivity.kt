@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         navController = findNavController(R.id.nav_host_fragment)
-     //   navController = findNavController(this, R.id.nav_host_fragment)
         drawerLayout = findViewById(R.id.drawer_layout)
         appBarConfigartion = AppBarConfiguration(navController.graph , drawerLayout)
         navigationview = findViewById(R.id.navigationView)
@@ -34,6 +33,8 @@ class MainActivity : AppCompatActivity() {
         actionBar!!.setDisplayHomeAsUpEnabled(true)
 
     }
+
+
    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {

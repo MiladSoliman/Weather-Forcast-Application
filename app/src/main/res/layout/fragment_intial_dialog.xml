@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2a4359"
+    tools:context=".dialog.model.IntialDialogFragment">
+
+    <RadioGroup
+        android:id="@+id/IntialradioGroup"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/radio_gps"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:buttonTint="@color/white"
+            android:text="@string/radio_Gps"
+            android:textColor="@color/white"
+            android:textStyle="bold"></RadioButton>
+
+        <RadioButton
+            android:id="@+id/radio_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:buttonTint="@color/white"
+            android:text="@string/radio_Map"
+            android:textColor="@color/white"
+            android:textStyle="bold"></RadioButton>
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/start_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="237dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/IntialradioGroup" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

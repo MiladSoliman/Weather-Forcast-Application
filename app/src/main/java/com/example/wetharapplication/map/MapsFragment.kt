@@ -1,5 +1,6 @@
 package com.example.wetharapplication.map
 
+import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.navigation.Navigation
 import androidx.transition.Visibility
 import com.example.wetharapplication.R
 import com.example.wetharapplication.databinding.FragmentMapsBinding
@@ -28,6 +30,7 @@ class MapsFragment : Fragment() {
     lateinit var map : GoogleMap
      var lat :Double = 31.0
      var lon :Double = 30.0
+    lateinit var key:String
 
 
    // var mapFusedLocationClient: FusedLocationProviderClient =  LocationServices.getFusedLocationProviderClient(requireContext())
@@ -42,19 +45,14 @@ class MapsFragment : Fragment() {
          * user has installed Google Play services and returned to the app.
          */
        searchOnMap()
-      // val sydney = LatLng(-34.0, 151.0)
-        map = googleMap
-     // googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-    //  googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-        googleMap.clear()
-        googleMap.setOnMapClickListener { location->
+       map = googleMap
+       googleMap.setOnMapClickListener { location->
            googleMap.addMarker(MarkerOptions().position(location))
            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
            lat = location.latitude
            lon = location.latitude
-          // Log.i("Mizo's Location" , "" + lat + lon)
+          // Log.i("Location" , "" + lat + lon)
            binding.FabSaveFavLocation.visibility = View.VISIBLE
-
        }
 
 
@@ -66,10 +64,8 @@ class MapsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMapsBinding.inflate(inflater, container, false)
-
         return binding.root
     }
-
 
     private fun searchOnMap(){
         binding.searchFav.setOnEditorActionListener { v, actionId, event ->
@@ -94,7 +90,6 @@ class MapsFragment : Fragment() {
        var list :List<Address> = listOf()
         try {
             list = geoCoder.getFromLocationName(searchLocation , 1) as List<Address>
-
         }catch(e:IOException){
             e.printStackTrace()
         }
@@ -123,9 +118,26 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+        var se =  activity?.getSharedPreferences("Settings", Context.MODE_PRIVATE)
+        key = se?.getString("Key","Not Found") !!
+        se.edit().apply {
+            putBoolean("Map",false)
+            putFloat("lat",lat.toFloat())
+            putFloat("lon",lon.toFloat())
+            apply()
+        }
+
+
 
         binding.FabSaveFavLocation.setOnClickListener {
            Log.i("Essam" , "" + lat + lon )
+           if (key.equals("home")){
+               Navigation.findNavController(requireView()).navigate(R.id.From_Map_To_Home)
+           }
+           else if (key.equals("fav")){
+
+           }
+
         }
     }
 

@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.wetharapplication.model.Location
 import com.example.wetharapplication.model.RepositoryInterface
 
-class HomeViewModelFactory (private val myrepo: RepositoryInterface , private val context: Context) : ViewModelProvider.Factory{
+class HomeViewModelFactory (private val myrepo: RepositoryInterface ) : ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if(modelClass.isAssignableFrom(HomeViewModel::class.java)){
-            HomeViewModel(myrepo , context) as T
+            HomeViewModel(myrepo) as T
         }else{
             throw java.lang.IllegalArgumentException(" ViewModel Class not Found")
         }

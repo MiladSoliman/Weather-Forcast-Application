@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.wetharapplication.home.model.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/From_Home_To_Map"
+            app:destination="@id/mapsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.wetharapplication.settings.SettingsFragment"
@@ -19,11 +23,7 @@
         android:id="@+id/alertFragment"
         android:name="com.example.wetharapplication.alert.AlertFragment"
         android:label="fragment_alert"
-        tools:layout="@layout/fragment_alert" >
-        <action
-            android:id="@+id/Alert_To_Map"
-            app:destination="@id/mapsFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_alert" />
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.wetharapplication.favorite.FavoriteFragment"
@@ -37,5 +37,17 @@
         android:id="@+id/mapsFragment"
         android:name="com.example.wetharapplication.map.MapsFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/From_Map_To_Home"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="From"
+            app:argType="string" />
+    </fragment>
+    <dialog
+        android:id="@+id/intialDialogFragment"
+        android:name="com.example.wetharapplication.dialog.model.IntialDialogFragment"
+        android:label="fragment_intial_dialog"
+        tools:layout="@layout/fragment_intial_dialog" />
 </navigation>

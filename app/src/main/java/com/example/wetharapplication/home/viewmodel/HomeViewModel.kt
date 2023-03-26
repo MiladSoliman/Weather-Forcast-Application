@@ -13,27 +13,29 @@ import com.example.wetharapplication.model.RepositoryInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeViewModel (private val  myrepo: RepositoryInterface ,  private val context: Context) : ViewModel()  {
+class HomeViewModel (private val  myrepo: RepositoryInterface ) : ViewModel()  {
     private var myResponse : MutableLiveData<MyResponse> = MutableLiveData<MyResponse>()
     var _myResponse : LiveData<MyResponse> = myResponse
 
-  /* init {
+   /*init {
         location.getLastLocation()
         getResonse()
     }*/
 
-    private fun getResonse(lat:Double , long:Double) {
+    fun getWeather(lat:Double , long:Double) {
         viewModelScope.launch(Dispatchers.IO) {
             myResponse.postValue(myrepo.getDataFromApi(lat , long))
         }
     }
 
-    fun getLocation(){
+
+
+   /* fun getLocation(){
         var location = Location(context)
         location.getLastLocation()
         location.myLocation.observe(context as LifecycleOwner){
             Log.i("my location" , "" +it.get(0) + it.get(1))
             getResonse(it.get(0) , it.get(1))
                   }
-    }
+    }*/
 }

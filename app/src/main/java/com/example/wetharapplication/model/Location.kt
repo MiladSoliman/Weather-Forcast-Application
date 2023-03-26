@@ -9,7 +9,9 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -19,9 +21,11 @@ import java.util.*
 
 const val PERMISSION_ID = 44
 class Location ( var context : Context){
-    var myLocation :MutableLiveData<List<Double>>  = MutableLiveData<List<Double>>()
-    var mFusedLocationClient: FusedLocationProviderClient =  LocationServices.getFusedLocationProviderClient(context)
+  var myLocation :MutableLiveData<List<Double>>  = MutableLiveData<List<Double>>()
+   // var _myLocation : LiveData<List<Double>> = myLocation
 
+
+    var mFusedLocationClient: FusedLocationProviderClient =  LocationServices.getFusedLocationProviderClient(context)
 
     @SuppressLint("MissingPermission")
     fun getLastLocation() {
@@ -96,6 +100,7 @@ class Location ( var context : Context){
     private val mLocationCallBack : LocationCallback = object : LocationCallback(){
         override fun onLocationResult(locationResult: LocationResult?) {
             val mlastLocation : Location = locationResult?.lastLocation!!
+            Log.i("MsMS" , ""+mlastLocation.latitude +  mlastLocation.longitude   )
              myLocation.postValue(listOf(mlastLocation.latitude , mlastLocation.longitude ))
             stopLocationUpdates()
 
@@ -106,3 +111,5 @@ class Location ( var context : Context){
         mFusedLocationClient.removeLocationUpdates(mLocationCallBack)
     }
 }
+
+

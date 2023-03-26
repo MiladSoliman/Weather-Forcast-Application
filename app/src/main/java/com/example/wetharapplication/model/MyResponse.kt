@@ -8,6 +8,7 @@ data class MyResponse (
     val current: Current,
     val hourly: List<Current>,
     val daily: List<Daily>
+
 )
 
 
