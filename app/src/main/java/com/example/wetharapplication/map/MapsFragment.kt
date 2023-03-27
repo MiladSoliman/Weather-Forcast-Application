@@ -30,8 +30,9 @@ class MapsFragment : Fragment() {
     var lat: Double = 31.0
     var lon: Double = 30.0
 
+    val args:MapsFragmentArgs by navArgs()
 
-    lateinit var key: String
+  //  lateinit var key: String
     private val callback = OnMapReadyCallback { googleMap ->
         searchOnMap()
         map = googleMap
@@ -104,8 +105,22 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
+
         binding.FabSaveFavLocation.setOnClickListener {
-            Navigation.findNavController(requireView()).navigate(R.id.MapToAlert)
+           if (args.from.equals("home")){
+                activity?.getSharedPreferences("My Shared", Context.MODE_PRIVATE)?.edit()
+                   ?.apply {
+                       putBoolean("Map",false)
+                       putFloat("lat",lat.toFloat())
+                       putFloat("long",lon.toFloat())
+                       apply()
+                       Log.i("my location",""+lat + lon )
+                   }
+               Navigation.findNavController(view).navigate(R.id.From_Map_To_Home)
+           }else{
+               Navigation.findNavController(view).navigate(R.id.FromMapToFav)
+           }
         }
 
 

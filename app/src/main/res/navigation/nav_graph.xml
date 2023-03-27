@@ -11,7 +11,7 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/FromHomeToMap"
+            android:id="@+id/homt_map"
             app:destination="@id/mapsFragment" />
     </fragment>
     <fragment
@@ -43,13 +43,11 @@
             app:destination="@id/homeFragment" />
         <argument
             android:name="from"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="map" />
         <action
             android:id="@+id/FromMapToFav"
             app:destination="@id/favoriteFragment" />
-        <action
-            android:id="@+id/MapToAlert"
-            app:destination="@id/alertFragment" />
 
     </fragment>
     <dialog

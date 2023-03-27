@@ -50,16 +50,19 @@ class IntialDialogFragment : DialogFragment() {
             var selectedItem = binding.IntialradioGroup.checkedRadioButtonId
             if (selectedItem == R.id.radio_gps) {
                 intialModel.getMyLocation()
+
             } else if (selectedItem == R.id.radio_map) {
                 activity?.getSharedPreferences("My Shared", MODE_PRIVATE)?.edit()?.apply() {
                     putBoolean("Map", true)
                     putString("lamguage", "en")
                     putString("units", "metrice")
                     apply()
-                    startHomeActivity()
                 }
+                dialog?.dismiss()
+                startHomeActivity()
             }
         }
+
 
         intialModel.observLocation().observe(viewLifecycleOwner){
             if (it[0]!=0.0 && it[1]!=0.0){
@@ -71,14 +74,15 @@ class IntialDialogFragment : DialogFragment() {
     }
 
         private fun saveInSharedPrefernce(lat: Double, lon: Double) {
-            var shared = requireActivity().getSharedPreferences("My Shared", MODE_PRIVATE)
-            var editor = shared.edit()
-            //editor.putBoolean("Map",false)
-            editor.putFloat("lat", lat.toFloat())
-            editor.putFloat("long", lon.toFloat())
-            editor.putString("lamguage", "en")
-            editor.putString("units", "metrice")
-            editor.commit()
+            requireActivity().getSharedPreferences("My Shared", MODE_PRIVATE).edit().apply(){
+                putBoolean("Map",false)
+                putFloat("lat", lat.toFloat())
+                putFloat("long", lon.toFloat())
+                putString("language", "en")
+                putString("units", "metrice")
+                apply()
+            }
+            dialog?.dismiss()
             startHomeActivity()
         }
 
@@ -88,6 +92,15 @@ class IntialDialogFragment : DialogFragment() {
             requireActivity().finish()
 
         }
+
+    override fun onStart() {
+        super.onStart()
+       dialog?.setCanceledOnTouchOutside(false)
+        dialog!!.window?.setLayout(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+    }
 
 
     }

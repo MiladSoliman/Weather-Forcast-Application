@@ -2,6 +2,7 @@ package com.example.wetharapplication.home.model
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,10 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.wetharapplication.R
 import com.example.wetharapplication.databinding.FragmentHomeBinding
 import com.example.wetharapplication.home.viewmodel.HomeViewModel
 import com.example.wetharapplication.home.viewmodel.HomeViewModelFactory
@@ -32,13 +31,12 @@ class HomeFragment : Fragment() {
     var isMap :Boolean = false
     private var lat:Double =0.0
     private var long :Double =0.0
+    lateinit var se :SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       var se =  activity?.getSharedPreferences("My Shared",MODE_PRIVATE)
+         se =  activity?.getSharedPreferences("My Shared",MODE_PRIVATE)!!
         isMap = se?.getBoolean("Map",false) !!
-        lat = se?.getFloat("lat" ,17f)?.toDouble() !!
-        long =  se?.getFloat("long" ,7f)?.toDouble() !!
     }
 
     override fun onCreateView(
@@ -52,6 +50,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
     }
 
 
@@ -59,8 +59,11 @@ class HomeFragment : Fragment() {
         var context: Context = requireContext()
         super.onResume()
         if (isMap) {
-          Navigation.findNavController(requireView()).navigate(R.id.FromHomeToMap)
-        } else {
+              val action = HomeFragmentDirections.homtMap("home")
+              Navigation.findNavController(requireView()).navigate(action)
+        } else{
+            lat = se?.getFloat("lat" ,17f)?.toDouble() !!
+            long =  se?.getFloat("long" ,7f)?.toDouble() !!
             homeFactory =
                 HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance()))
             homeModel =
