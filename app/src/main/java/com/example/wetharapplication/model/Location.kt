@@ -22,7 +22,7 @@ import java.util.*
 const val PERMISSION_ID = 44
 class Location ( var context : Context){
   var myLocation :MutableLiveData<List<Double>>  = MutableLiveData<List<Double>>()
-   // var _myLocation : LiveData<List<Double>> = myLocation
+  var _myLocation : LiveData<List<Double>> = myLocation
 
 
     var mFusedLocationClient: FusedLocationProviderClient =  LocationServices.getFusedLocationProviderClient(context)

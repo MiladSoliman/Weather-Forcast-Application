@@ -28,6 +28,7 @@
         android:background="#2a4359"
         android:id="@+id/navigationView"
         android:layout_gravity="start"
+
         />
 
 </androidx.drawerlayout.widget.DrawerLayout>

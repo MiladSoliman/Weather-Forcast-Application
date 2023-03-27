@@ -15,7 +15,7 @@ class IntialViewModel (var location: Location ) :ViewModel (){
     }
 
     fun observLocation () : LiveData<List<Double>>{
-        return location.myLocation
+        return location._myLocation
     }
 }
 

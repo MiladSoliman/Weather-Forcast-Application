@@ -11,5 +11,6 @@ class SplashScreen : AppCompatActivity() {
 
         var dialog = IntialDialogFragment()
         dialog.show(supportFragmentManager , "Milad")
+
     }
 }

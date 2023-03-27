@@ -8,12 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -23,11 +19,8 @@ import com.example.wetharapplication.home.viewmodel.HomeViewModel
 import com.example.wetharapplication.home.viewmodel.HomeViewModelFactory
 import com.example.wetharapplication.model.Current
 import com.example.wetharapplication.model.Daily
-import com.example.wetharapplication.model.Location
 import com.example.wetharapplication.model.Repository
 import com.example.wetharapplication.network.WeatherClient
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class HomeFragment : Fragment() {
@@ -44,8 +37,8 @@ class HomeFragment : Fragment() {
         super.onCreate(savedInstanceState)
        var se =  activity?.getSharedPreferences("My Shared",MODE_PRIVATE)
         isMap = se?.getBoolean("Map",false) !!
-        lat = se?.getFloat("lat" ,31.0f)?.toDouble() !!
-        long =  se?.getFloat("long" ,31.0f)?.toDouble() !!
+        lat = se?.getFloat("lat" ,17f)?.toDouble() !!
+        long =  se?.getFloat("long" ,7f)?.toDouble() !!
     }
 
     override fun onCreateView(
@@ -59,7 +52,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
     }
 
 
@@ -67,9 +59,7 @@ class HomeFragment : Fragment() {
         var context: Context = requireContext()
         super.onResume()
         if (isMap) {
-           Navigation.findNavController(requireView()).navigate(R.id.From_Home_To_Map)
-           // val action = HomeFragmentDirections.actionHomeFragmentToMapsFragment("home")
-          //  findNavController().navigate(action)
+          Navigation.findNavController(requireView()).navigate(R.id.FromHomeToMap)
         } else {
             homeFactory =
                 HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance()))
@@ -110,7 +100,6 @@ class HomeFragment : Fragment() {
 
                 }
             }
-
 
         }
     }
