@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.wetharapplication.R
 import com.example.wetharapplication.databinding.FragmentMapsBinding
@@ -23,13 +24,19 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import java.io.IOException
 import androidx.navigation.fragment.navArgs
+import com.example.wetharapplication.database.ConcreteLocalSource
+import com.example.wetharapplication.favorite.viewmodel.myFav.FavVeiwModel
+import com.example.wetharapplication.favorite.viewmodel.myFav.FavViewModelFactory
+import com.example.wetharapplication.model.Repository
+import com.example.wetharapplication.network.WeatherClient
 
 class MapsFragment : Fragment() {
     lateinit var binding: FragmentMapsBinding
     lateinit var map: GoogleMap
     var lat: Double = 31.0
     var lon: Double = 30.0
-
+    lateinit var favFactory: FavViewModelFactory
+    lateinit var favModel: FavVeiwModel
     val args:MapsFragmentArgs by navArgs()
 
   //  lateinit var key: String
@@ -119,6 +126,20 @@ class MapsFragment : Fragment() {
                    }
                Navigation.findNavController(view).navigate(R.id.From_Map_To_Home)
            }else{
+              /* activity?.getSharedPreferences("My Shared", Context.MODE_PRIVATE)?.edit()
+                   ?.apply {
+                       putFloat("lat",lat.toFloat())
+                       putFloat("long",lon.toFloat())
+                       apply()
+                       Log.i("my Fav location",""+lat + lon )
+                   }*/
+
+               favFactory =
+                   FavViewModelFactory (Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(requireContext())) )
+               favModel =
+                   ViewModelProvider(requireActivity(),  favFactory).get(FavVeiwModel::class.java)
+               Log.i("fav","" +lat+lon)
+               favModel.insertWeather(lat,lon)
                Navigation.findNavController(view).navigate(R.id.FromMapToFav)
            }
         }

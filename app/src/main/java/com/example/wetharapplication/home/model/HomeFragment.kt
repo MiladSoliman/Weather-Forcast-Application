@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.wetharapplication.database.ConcreteLocalSource
 import com.example.wetharapplication.databinding.FragmentHomeBinding
 import com.example.wetharapplication.home.viewmodel.HomeViewModel
 import com.example.wetharapplication.home.viewmodel.HomeViewModelFactory
@@ -65,7 +66,7 @@ class HomeFragment : Fragment() {
             lat = se?.getFloat("lat" ,17f)?.toDouble() !!
             long =  se?.getFloat("long" ,7f)?.toDouble() !!
             homeFactory =
-                HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance()))
+                HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance(),ConcreteLocalSource.getInstance(context)) )
             homeModel =
                 ViewModelProvider(requireActivity(), homeFactory).get(HomeViewModel::class.java)
             homeModel.getWeather(lat , long)
@@ -73,21 +74,21 @@ class HomeFragment : Fragment() {
                 if (response != null) {
                     Log.i("ya rab", "" + response.timezone)
                     binding.tvCity.text = response.timezone
-                    binding.tvDescription.text = response.current.weather.get(0).description
+                    binding.tvDescription.text = response.current?.weather?.get(0)?.description
                     var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ")
-                    var currentDate = simpleDate.format(response.current.dt * 1000L)
+                    var currentDate = simpleDate.format(response.current?.dt?.times(1000L) ?: 0)
                     binding.tvDate.text = currentDate.toString()
-                    binding.tvHomedegree.text = response.current.temp.toString()
-                    binding.tvEditHumidity.text = response.current.humidity.toString()
-                    binding.tvEditCloud.text = response.current.clouds.toString()
-                    binding.tvEditIsabilty.text = response.current.visibility.toString()
-                    binding.tvEditPressur.text = response.current.pressure.toString() + " " + "hpa"
-                    binding.tvEditUv.text = response.current.uvi.toString()
-                    binding.tvEditWindspeed.text = response.current.windSpeed.toString()
+                    binding.tvHomedegree.text = response.current?.temp.toString()
+                    binding.tvEditHumidity.text = response.current?.humidity.toString()
+                    binding.tvEditCloud.text = response.current?.clouds.toString()
+                    binding.tvEditIsabilty.text = response.current?.visibility.toString()
+                    binding.tvEditPressur.text = response.current?.pressure.toString() + " " + "hpa"
+                    binding.tvEditUv.text = response.current?.uvi.toString()
+                    binding.tvEditWindspeed.text = response.current?.windSpeed.toString()
                     Glide.with(requireContext())
-                        .load("https://openweathermap.org/img/wn/${response.current.weather.get(0).icon}@2x.png")
+                        .load("https://openweathermap.org/img/wn/${response.current?.weather?.get(0)?.icon}@2x.png")
                         .into(binding.homeImage)
-                    Log.i("dayicon", "" + response.current.weather.get(0).icon)
+                    Log.i("dayicon", "" + response.current?.weather?.get(0)?.icon)
                     hoursList = response.hourly
                     Log.i("Ehab", response.hourly.toString())
                     binding.hourlyRecyclerview.apply {

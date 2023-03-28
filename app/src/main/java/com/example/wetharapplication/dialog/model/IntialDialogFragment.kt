@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.wetharapplication.MainActivity
@@ -60,6 +61,8 @@ class IntialDialogFragment : DialogFragment() {
                 }
                 dialog?.dismiss()
                 startHomeActivity()
+            }else{
+                Toast.makeText(requireContext(),"Please Choose Your Location", Toast.LENGTH_SHORT ).show()
             }
         }
 
