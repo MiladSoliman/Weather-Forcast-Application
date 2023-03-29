@@ -8,4 +8,6 @@ interface LocalSource {
    suspend fun deleteCountry (myResponse: MyResponse)
    suspend fun getStoredCountries () : Flow<List<MyResponse>>
 
+   suspend fun getSelectedWeather(lat:Double,lon:Double) : Flow<MyResponse>
+
 }

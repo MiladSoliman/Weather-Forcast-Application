@@ -26,6 +26,7 @@ import com.example.wetharapplication.model.Current
 import com.example.wetharapplication.model.Daily
 import com.example.wetharapplication.model.MyResponse
 import com.example.wetharapplication.model.Repository
+import com.example.wetharapplication.network.InternetCheck
 import com.example.wetharapplication.network.WeatherClient
 import java.text.SimpleDateFormat
 
@@ -59,11 +60,19 @@ class FavDetailsFragment : Fragment() {
          var context:Context = requireContext()
         detailsFactory =FavDetailsModelFactory(Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(context)) )
         detilsModel = ViewModelProvider(requireActivity(),  detailsFactory).get(FavDetailsViewModel::class.java)
-      // check for Network
-        detilsModel.getWeatherFromApi(latitude,longitude)
+
+        if(InternetCheck.getConnectivity(context) == true) {
+            detilsModel.getWeatherFromApi(latitude, longitude)
+            //update Weather
+            detilsModel.UpdateWeather(latitude,longitude)
+        }else{
+            var lat2 = String.format("%.4f",latitude).toDouble()
+            var long2 = String.format("%.4f",longitude).toDouble()
+            detilsModel.getLocalWeather(lat2,long2)
+        }
 
         detilsModel._FavWeathers.observe(requireActivity()){response->
-            binding.tvFavCity.text = response.timezone
+            binding.tvFavCity.text =response.timezone
             binding.tvFavDescription.text = response.current?.weather?.get(0)?.description
             var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ")
             var currentDate = simpleDate.format(response.current?.dt?.times(1000L) ?: 0)

@@ -13,5 +13,7 @@ interface WeatherDao {
     suspend fun insertCountry(myResponse: MyResponse)
     @Delete
     suspend fun deleteCountry(myResponse: MyResponse)
+    @Query("SELECT * FROM Weather WHERE lat LIKE :latitude AND lon LIKE :longitude")
+    fun getSelectedWeather(latitude:Double ,longitude:Double):Flow<MyResponse>
 
 }

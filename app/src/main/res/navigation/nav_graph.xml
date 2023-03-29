@@ -43,14 +43,18 @@
         tools:layout="@layout/fragment_maps" >
         <action
             android:id="@+id/From_Map_To_Home"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/mapsFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="from"
             app:argType="string"
             android:defaultValue="map" />
         <action
             android:id="@+id/FromMapToFav"
-            app:destination="@id/favoriteFragment" />
+            app:destination="@id/favoriteFragment"
+            app:popUpTo="@id/mapsFragment"
+            app:popUpToInclusive="true" />
 
     </fragment>
     <dialog

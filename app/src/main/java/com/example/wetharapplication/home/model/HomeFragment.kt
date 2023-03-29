@@ -26,7 +26,7 @@ import java.text.SimpleDateFormat
 class HomeFragment : Fragment() {
     lateinit var homeFactory: HomeViewModelFactory
     lateinit var homeModel: HomeViewModel
-    lateinit var binding: FragmentHomeBinding
+    lateinit var binding:FragmentHomeBinding
     lateinit var hoursList: List<Current>
     lateinit var daysList: List<Daily>
     var isMap :Boolean = false

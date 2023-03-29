@@ -21,6 +21,8 @@
     <string name="tv_WindSpeed">Wind Speed</string>
     <string name="tv_Cloud">Cloud</string>
     <string name="tv_UV">UV</string>
-
-
+    <string name="tv_menue_home">Home</string>
+    <string name="tv_menue_fav">Favorite</string>
+    <string name="tv_menue_alert">Alert</string>
+    <string name="tv_menue_settings">Settings</string>
 </resources>

@@ -38,4 +38,8 @@ class ConcreteLocalSource private constructor(context: Context) : LocalSource {
     override suspend fun getStoredCountries(): Flow<List<MyResponse>> {
        return dao.getFavWeathers()
     }
+
+    override suspend fun getSelectedWeather(lat: Double, lon: Double): Flow<MyResponse> {
+        return dao.getSelectedWeather(lat,lon)
+    }
 }

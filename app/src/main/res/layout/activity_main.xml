@@ -21,14 +21,15 @@
         app:navGraph="@navigation/nav_graph" />
 
     <com.google.android.material.navigation.NavigationView
-        android:layout_width="260dp"
+        android:layout_width="240dp"
         android:layout_height="match_parent"
         app:headerLayout="@layout/header"
         app:menu="@menu/menu"
+        app:itemIconTint="@drawable/menue_selector"
+        app:itemTextColor="@drawable/menue_selector"
         android:background="#2a4359"
         android:id="@+id/navigationView"
         android:layout_gravity="start"
-
         />
 
 </androidx.drawerlayout.widget.DrawerLayout>

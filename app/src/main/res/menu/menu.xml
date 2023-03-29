@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item android:title="Home"
+        <item android:title="@string/tv_menue_home"
             android:id="@+id/homeFragment"
             android:icon="@drawable/baseline_home_24"
             />
-        <item android:title="Favorite"
+        <item android:title="@string/tv_menue_fav"
             android:id="@+id/favoriteFragment"
             android:icon="@drawable/baseline_favorite_24"
             />
-        <item android:title="Alert"
+        <item android:title="@string/tv_menue_alert"
             android:id="@+id/alertFragment"
             android:icon="@drawable/baseline_add_alert_24"
             />
-        <item android:title="Settings"
+        <item android:title="@string/tv_menue_settings"
             android:id="@+id/settingsFragment"
             android:icon="@drawable/baseline_settings_24"
             />

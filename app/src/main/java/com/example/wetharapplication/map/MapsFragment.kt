@@ -133,7 +133,6 @@ class MapsFragment : Fragment() {
                        apply()
                        Log.i("my Fav location",""+lat + lon )
                    }*/
-
                favFactory =
                    FavViewModelFactory (Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(requireContext())) )
                favModel =
