@@ -1,12 +1,15 @@
 package com.example.wetharapplication.favorite.model.details
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +31,7 @@ import com.example.wetharapplication.model.MyResponse
 import com.example.wetharapplication.model.Repository
 import com.example.wetharapplication.network.InternetCheck
 import com.example.wetharapplication.network.WeatherClient
+import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 
 class FavDetailsFragment : Fragment() {
@@ -39,7 +43,9 @@ class FavDetailsFragment : Fragment() {
     var latitude =0.0
     var longitude =0.0
     val args: FavDetailsFragmentArgs by navArgs()
-
+    lateinit var set:SharedPreferences
+    lateinit var favlanguage:String
+    lateinit var favunites:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         latitude = args.lat.toDouble()
@@ -60,15 +66,20 @@ class FavDetailsFragment : Fragment() {
          var context:Context = requireContext()
         detailsFactory =FavDetailsModelFactory(Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(context)) )
         detilsModel = ViewModelProvider(requireActivity(),  detailsFactory).get(FavDetailsViewModel::class.java)
+        set = activity?.getSharedPreferences("My Shared", Context.MODE_PRIVATE)!!
+        favlanguage = set?.getString("language","en")!!
+        favunites =  set?.getString("units","standard")!!
 
         if(InternetCheck.getConnectivity(context) == true) {
-            detilsModel.getWeatherFromApi(latitude, longitude)
+            detilsModel.getWeatherFromApi(latitude, longitude, favunites,favlanguage)
             //update Weather
             detilsModel.UpdateWeather(latitude,longitude)
         }else{
             var lat2 = String.format("%.4f",latitude).toDouble()
             var long2 = String.format("%.4f",longitude).toDouble()
             detilsModel.getLocalWeather(lat2,long2)
+            val snakbar = Snackbar.make(view,context.resources.getString(R.string.snakbar_msg),Snackbar.LENGTH_LONG).setAction("Action",null)
+            snakbar.show()
         }
 
         detilsModel._FavWeathers.observe(requireActivity()){response->
@@ -104,6 +115,6 @@ class FavDetailsFragment : Fragment() {
         }
         }
 
-    }
+ }
 
 

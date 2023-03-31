@@ -33,11 +33,14 @@ class HomeFragment : Fragment() {
     private var lat:Double =0.0
     private var long :Double =0.0
     lateinit var se :SharedPreferences
+    lateinit var language:String
+    lateinit var unites:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
          se =  activity?.getSharedPreferences("My Shared",MODE_PRIVATE)!!
-        isMap = se?.getBoolean("Map",false) !!
+
+
     }
 
     override fun onCreateView(
@@ -55,8 +58,8 @@ class HomeFragment : Fragment() {
 
     }
 
-
     override fun onResume() {
+        isMap = se?.getBoolean("Map",false) !!
         var context: Context = requireContext()
         super.onResume()
         if (isMap) {
@@ -65,14 +68,16 @@ class HomeFragment : Fragment() {
         } else{
             lat = se?.getFloat("lat" ,17f)?.toDouble() !!
             long =  se?.getFloat("long" ,7f)?.toDouble() !!
+            language = se?.getString("language","en")!!
+            unites= se?.getString("units","standard")!!
             homeFactory =
                 HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance(),ConcreteLocalSource.getInstance(context)) )
             homeModel =
                 ViewModelProvider(requireActivity(), homeFactory).get(HomeViewModel::class.java)
-            homeModel.getWeather(lat , long)
+            homeModel.getWeather(lat , long ,unites,language)
             homeModel._myResponse.observe(requireActivity()) { response ->
                 if (response != null) {
-                    Log.i("ya rab", "" + response.timezone)
+                    Log.i("ya rab", "" +unites)
                     binding.tvCity.text = response.timezone
                     binding.tvDescription.text = response.current?.weather?.get(0)?.description
                     var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ")

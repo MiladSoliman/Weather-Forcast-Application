@@ -25,4 +25,10 @@
     <string name="tv_menue_fav">Favorite</string>
     <string name="tv_menue_alert">Alert</string>
     <string name="tv_menue_settings">Settings</string>
+    <string name="delete_message" translatable="false">"You will lose it from your favourite list"</string>
+    <string name="delete_title" translatable="false">""Wait ! Are You Sure You Want To Delete This Item ?""</string>
+    <string name="delete_accepet" translatable="false">"Yes"</string>
+    <string name="delete_refuse" translatable="false">"Cancel"</string>
+    <string name="delete_Toast" translatable="false">"Removed From Your Favorite List"</string>
+    <string name="snakbar_msg" translatable="false">"This Is The Last Data When You Are Connected To The Internet"</string>
 </resources>

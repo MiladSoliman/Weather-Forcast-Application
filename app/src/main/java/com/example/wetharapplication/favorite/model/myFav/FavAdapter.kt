@@ -1,6 +1,7 @@
 package com.example.wetharapplication.favorite.model.myFav
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.location.Address
@@ -8,8 +9,12 @@ import android.location.Geocoder
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
 import android.widget.Toast
+import androidx.constraintlayout.widget.Constraints
 import androidx.recyclerview.widget.RecyclerView
+import com.example.wetharapplication.R
 import com.example.wetharapplication.databinding.FavItemBinding
 import com.example.wetharapplication.model.MyResponse
 import java.util.*
@@ -34,20 +39,23 @@ class FavAdapter (private val favWeather: List<MyResponse>, var context: Context
        holder.binding.tvFavName.text = "$area $country"
 
        holder.binding.deleteImage.setOnClickListener {
-           val yes = "YES,I'M SURE"
-           val no = "Cancel"
+           val yes = context.resources.getString(R.string.delete_accepet)
+           val no = context.resources.getString(R.string.delete_refuse)
            val builder = AlertDialog.Builder(context)
-           builder.setMessage("You will lose it from your favourite list")
-           builder.setTitle("Wait ! Are You Sure You Want To Delete This Item ?")
+           builder.setMessage(context.resources.getString(R.string.delete_message))                 //("You will lose it from your favourite list")
+           builder.setTitle(context.resources.getString(R.string.delete_title))
            builder.setCancelable(false)
            builder.setPositiveButton(Html.fromHtml("<font color='#dad9d4'>$yes</font>"),
                { dialog: DialogInterface?, which: Int ->
                    listener.deleteCountry(response)
-                   Toast.makeText(context, "Removed from your favorite list", Toast.LENGTH_SHORT).show()
+                   Toast.makeText(context, (context.resources.getString(R.string.delete_Toast)), Toast.LENGTH_SHORT).show()
                })
            builder.setNegativeButton(Html.fromHtml("<font color='#dad9d4'>$no</font>"),
                { dialog: DialogInterface, which: Int -> dialog.cancel() } )
            val alertDialog = builder.create()
+           alertDialog.setOnShowListener {
+               alertDialog.window?.setBackgroundDrawableResource(R.drawable.dialog)
+           }
            alertDialog.show()
        }
 
@@ -65,4 +73,32 @@ class FavAdapter (private val favWeather: List<MyResponse>, var context: Context
 
     inner class ViewHolder(var binding:FavItemBinding) : RecyclerView.ViewHolder(binding.root) {
     }
+
+
+   /* fun dialogSettingView() {
+        var dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(com.example.wetharpresnter.R.layout.start_setting_dialog_iteam)
+        val window: Window? = dialog.getWindow()
+        window?.setLayout(
+            Constraints.LayoutParams.MATCH_PARENT,
+            Constraints.LayoutParams.WRAP_CONTENT
+        )
+        window?.setBackgroundDrawableResource(R.color.transparent);
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+
+
+        dialog.findViewById<Button>(com.example.wetharpresnter.R.id.btn_save).setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            var location =
+                dialog.findViewById<RadioGroup>(com.example.wetharpresnter.R.id.rg_location)
+            onRadioButtonClicked(location)
+            var lang = dialog.findViewById<RadioGroup>(com.example.wetharpresnter.R.id.rg_lang)
+            onRadioButtonClicked(lang)
+            dialog.dismiss()
+
+        }
+    }*/
 }

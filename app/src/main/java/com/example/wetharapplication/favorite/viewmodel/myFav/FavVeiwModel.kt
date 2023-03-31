@@ -14,9 +14,9 @@ class FavVeiwModel (private var myRepo: RepositoryInterface) : ViewModel(){
     private var FavWeathers : MutableLiveData<List<MyResponse>> = MutableLiveData<List<MyResponse>>()
     var _FavWeathers : LiveData<List<MyResponse>> = FavWeathers
 
-    fun insertWeather(lat:Double , long: Double){
+    fun insertWeather(lat:Double , long: Double ){
        viewModelScope.launch(Dispatchers.IO) {
-          myRepo.insertCountry(myRepo.getDataFromApi(lat,long))
+          myRepo.insertCountry(myRepo.getDataFromApi(lat,long,"metric","ar"))
        }
     }
 

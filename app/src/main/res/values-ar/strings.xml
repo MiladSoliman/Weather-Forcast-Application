@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wethar Application</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_location">الموقع</string>
+    <string name="tv_language">اللغة</string>
+    <string name="tv_windSpeed">سرعة الرياح</string>
+    <string name="tv_tempreture">درجة الحرارة</string>
+    <string name="radio_Gps">موقعك الان</string>
+    <string name="radio_Map">الخريطة</string>
+    <string name="radio_english">اللغة الانجليزية</string>
+    <string name="radio_arabic">اللغة العربية</string>
+    <string name="radio_meter">متر/ثانية</string>
+    <string name="radio_mile">ميل/ساعة</string>
+    <string name="radio_cel">سيلزيوس</string>
+    <string name="radio_kel">كيلفين</string>
+    <string name="radio_fah">فهرينهيت</string>
+    <string name="tv_Humidity">الرطوبة</string>
+    <string name="tv_Pressure">الضغط</string>
+    <string name="tv_Visability">الرؤية</string>
+    <string name="tv_WindSpeed">سرعة الرياح</string>
+    <string name="tv_Cloud">السٌحب</string>
+    <string name="tv_UV">الاشعة البنفسجية</string>
+    <string name="tv_menue_home">الرئيسية</string>
+    <string name="tv_menue_fav">المفضلة</string>
+    <string name="tv_menue_alert">التنبيهات</string>
+    <string name="tv_menue_settings">الاعدادات</string>
+    <string name="delete_message" translatable="false">"سوف تفقد هذا العنصر من قائمتك المفضلة"</string>
+    <string name="delete_title" translatable="false">"هل انت واثق من انك تريد مسح هذا العنصر ؟"</string>
+    <string name="delete_accepet" translatable="false">"نعم"</string>
+    <string name="delete_refuse" translatable="false">"الغاء"</string>
+    <string name="delete_Toast" translatable="false">"تم ازالتها من قائمتك المفضلة"</string>
+    <string name="snakbar_msg" translatable="false">"هذة اخر معلومات محفوظة عندما كنت متصل بالانترنت"</string>
+
+
+
+
+
+</resources>

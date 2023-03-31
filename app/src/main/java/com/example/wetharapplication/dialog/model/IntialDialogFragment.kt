@@ -3,6 +3,7 @@ package com.example.wetharapplication.dialog.model
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,9 +26,9 @@ class IntialDialogFragment : DialogFragment() {
     lateinit var binding: FragmentIntialDialogBinding
     lateinit var intialFactory: IntialViewModelFactory
     lateinit var intialModel: IntialViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -51,12 +52,11 @@ class IntialDialogFragment : DialogFragment() {
             var selectedItem = binding.IntialradioGroup.checkedRadioButtonId
             if (selectedItem == R.id.radio_gps) {
                 intialModel.getMyLocation()
-
             } else if (selectedItem == R.id.radio_map) {
                 activity?.getSharedPreferences("My Shared", MODE_PRIVATE)?.edit()?.apply() {
                     putBoolean("Map", true)
-                    putString("lamguage", "en")
-                    putString("units", "metrice")
+                    putString("language", "en")
+                    putString("units", "standard")
                     apply()
                 }
                 dialog?.dismiss()

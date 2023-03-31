@@ -23,8 +23,8 @@
 
         <TextView
             android:id="@+id/tv_location"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:text="@string/tv_location"
             android:textColor="@color/white"
@@ -44,6 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         <RadioGroup
+            android:id="@+id/location_radiogroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -53,19 +54,19 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:buttonTint="@color/white"
-                android:textStyle="bold"
                 android:text="@string/radio_Gps"
-                android:textColor="@color/white"></RadioButton>
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
 
             <RadioButton
                 android:id="@+id/radio_map"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:textStyle="bold"
                 android:buttonTint="@color/white"
                 android:text="@string/radio_Map"
-                android:textColor="@color/white"></RadioButton>
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
 
         </RadioGroup>
 
@@ -86,8 +87,8 @@
 
         <TextView
             android:id="@+id/tv_language"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="89dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:text="@string/tv_language"
             android:textColor="@color/white"
@@ -107,6 +108,7 @@
         app:layout_constraintTop_toTopOf="@+id/cardView3">
 
         <RadioGroup
+            android:id="@+id/language_radiogroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -116,19 +118,19 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:buttonTint="@color/white"
-                android:textStyle="bold"
                 android:text="@string/radio_english"
-                android:textColor="@color/white"></RadioButton>
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
 
             <RadioButton
                 android:id="@+id/radio_arabic"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:buttonTint="@color/white"
-                android:textStyle="bold"
                 android:layout_marginStart="10dp"
+                android:buttonTint="@color/white"
                 android:text="@string/radio_arabic"
-                android:textColor="@color/white"></RadioButton>
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
 
         </RadioGroup>
 
@@ -148,8 +150,8 @@
 
         <TextView
             android:id="@+id/tv_windSpeed"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="35dp"
             android:text="@string/tv_windSpeed"
             android:textColor="@color/white"
@@ -169,6 +171,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView4">
 
         <RadioGroup
+            android:id="@+id/wind_radiogroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -177,20 +180,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:textStyle="bold"
                 android:buttonTint="@color/white"
                 android:text="@string/radio_meter"
-                android:textColor="@color/white"></RadioButton>
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
 
             <RadioButton
                 android:id="@+id/radio_mile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:textStyle="bold"
                 android:buttonTint="@color/white"
                 android:text="@string/radio_mile"
-                android:textColor="@color/white"></RadioButton>
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
 
         </RadioGroup>
 
@@ -208,7 +211,7 @@
 
         <TextView
             android:id="@+id/tv_tempreture"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="35dp"
             android:text="@string/tv_tempreture"
@@ -228,6 +231,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView6">
 
         <RadioGroup
+            android:id="@+id/temp_radiogroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -236,30 +240,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:textStyle="bold"
                 android:buttonTint="@color/white"
                 android:text="@string/radio_cel"
-                android:textColor="@color/white"></RadioButton>
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
 
             <RadioButton
                 android:id="@+id/radio_feh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:textStyle="bold"
                 android:buttonTint="@color/white"
                 android:text="@string/radio_fah"
-                android:textColor="@color/white"></RadioButton>
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
 
             <RadioButton
                 android:id="@+id/radio_kel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:textStyle="bold"
                 android:buttonTint="@color/white"
                 android:text="@string/radio_kel"
-                android:textColor="@color/white"></RadioButton>
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
 
         </RadioGroup>
 

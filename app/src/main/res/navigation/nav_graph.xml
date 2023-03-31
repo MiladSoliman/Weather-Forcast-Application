@@ -18,7 +18,11 @@
         android:id="@+id/settingsFragment"
         android:name="com.example.wetharapplication.settings.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/settingstomap"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/alertFragment"
         android:name="com.example.wetharapplication.alert.AlertFragment"

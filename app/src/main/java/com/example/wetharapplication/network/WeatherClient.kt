@@ -1,5 +1,6 @@
 package com.example.wetharapplication.network
 
+import android.annotation.SuppressLint
 import com.example.wetharapplication.model.MyResponse
 
 class WeatherClient : RemoteSource {
@@ -19,8 +20,9 @@ class WeatherClient : RemoteSource {
 
     }
 
-    override suspend fun getDataFromApi(lat: Double, lon: Double): MyResponse {
-        val response =  MyApi.retrofirService.getData(lat,lon)
+    @SuppressLint("SuspiciousIndentation")
+    override suspend fun getDataFromApi(lat: Double, lon: Double,  language :String ,unites:String): MyResponse {
+        val response =  MyApi.retrofirService.getData(lat,lon , language , unites)
            if (response.isSuccessful){
                 myResponse = response.body()!!
            }

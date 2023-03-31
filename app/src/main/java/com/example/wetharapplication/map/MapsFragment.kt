@@ -138,7 +138,7 @@ class MapsFragment : Fragment() {
                favModel =
                    ViewModelProvider(requireActivity(),  favFactory).get(FavVeiwModel::class.java)
                Log.i("fav","" +lat+lon)
-               favModel.insertWeather(lat,lon)
+               favModel.insertWeather(lat,lon,)
                Navigation.findNavController(view).navigate(R.id.FromMapToFav)
            }
         }

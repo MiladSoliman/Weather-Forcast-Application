@@ -22,9 +22,9 @@ class HomeViewModel (private val  myrepo: RepositoryInterface ) : ViewModel()  {
         getResonse()
     }*/
 
-    fun getWeather(lat:Double , long:Double) {
+    fun getWeather(lat:Double , long:Double , unites:String, langage:String) {
         viewModelScope.launch(Dispatchers.IO) {
-            myResponse.postValue(myrepo.getDataFromApi(lat , long))
+            myResponse.postValue(myrepo.getDataFromApi(lat , long , unites,langage ))
         }
     }
 

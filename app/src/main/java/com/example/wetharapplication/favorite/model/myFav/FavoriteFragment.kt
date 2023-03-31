@@ -38,9 +38,6 @@ class FavoriteFragment : Fragment() , OnRemove ,OnClick{
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-      /*  se =  activity?.getSharedPreferences("My Shared", Context.MODE_PRIVATE)!!
-        lat = se.getFloat("lat",31.0f).toDouble()
-        long = se.getFloat("lon",31.0f).toDouble()*/
         super.onViewCreated(view, savedInstanceState)
         var context:Context = requireContext()
         favFactory =
@@ -50,8 +47,6 @@ class FavoriteFragment : Fragment() , OnRemove ,OnClick{
        binding.favFAB.setOnClickListener {
            Navigation.findNavController(view).navigate(R.id.Fav_to_map)
        }
-
-      //favModel.insertWeather(lat,long)
 
        favModel.getFavouriteCountries()
        favModel._FavWeathers.observe(viewLifecycleOwner){

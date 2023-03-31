@@ -22,16 +22,16 @@ class FavDetailsViewModel (private var myRepo: RepositoryInterface) : ViewModel(
         }
     }
 
-    fun getWeatherFromApi(lat: Double,long: Double){
+    fun getWeatherFromApi(lat: Double,long: Double , unites:String , language :String){
         viewModelScope.launch {
-            DetilalsOFFavWeathers.postValue(myRepo.getDataFromApi(lat,long))
+            DetilalsOFFavWeathers.postValue(myRepo.getDataFromApi(lat,long,unites,language))
         }
     }
 
 
-    fun UpdateWeather(lat:Double,long:Double){
+    fun UpdateWeather(lat:Double,long:Double ){
         viewModelScope.launch(Dispatchers.IO) {
-            myRepo.insertCountry(myRepo.getDataFromApi(lat,long))
+            myRepo.insertCountry(myRepo.getDataFromApi(lat,long,"metric","en"))
         }
     }
 
