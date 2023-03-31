@@ -9,7 +9,7 @@ interface ApiService {
   @GET("onecall")
     suspend fun getData(@Query("lat") lat:Double
                         , @Query("lon") lon: Double,
-                         @Query("lang") lang: String = "en",
-                        @Query("units") units :String = "metric"
-                        ,@Query("appid") appid:String = "04140387a0c9b9535e981afe74e9ac2a" ): Response<MyResponse>
+                        @Query("units") units :String = "metric",
+                         @Query("lang") lang: String = "ar",
+                        @Query("appid") appid:String = "04140387a0c9b9535e981afe74e9ac2a" ): Response<MyResponse>
 }

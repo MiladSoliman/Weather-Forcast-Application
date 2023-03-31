@@ -113,7 +113,7 @@ class SettingsFragment : Fragment() {
 
 
    fun setDefultSettings(){
-       binding.radioCel.isChecked = true
+       binding.radioKel.isChecked = true
        binding.radioEnglish.isChecked = true
        binding.radioMeter.isChecked=true
        if (isMap==true){

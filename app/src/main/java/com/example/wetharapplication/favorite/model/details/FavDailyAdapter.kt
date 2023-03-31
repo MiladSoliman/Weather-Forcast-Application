@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wetharapplication.databinding.FavDailyViewBinding
 import com.example.wetharapplication.model.Daily
+import com.example.wetharapplication.util.MyUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,20 +26,16 @@ class FavDailyAdapter (private val dailyWeather: List<Daily>, var context: Conte
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var currentDay = dailyWeather.get(position)
-        var date= Date(currentDay.dt*1000L)
-        var sdf= SimpleDateFormat("d")
-        sdf.timeZone= TimeZone.getDefault()
-        var formatedData=sdf.format(date)
-        var intDay=formatedData.toInt()
-        var calendar= Calendar.getInstance()
-        calendar.set(Calendar.DAY_OF_MONTH,intDay)
-        var format= SimpleDateFormat("EEEE")
-        var day=format.format(calendar.time)
+
+        var day = MyUtil().ConvertToDay(currentDay.dt)
         holder.binding.tvFavoriteDay.text = day
         Glide.with(context).load("https://openweathermap.org/img/wn/${currentDay.weather.get(0).icon}@2x.png").into(binding.favoriteDayilyImageView)
         holder.binding.tvFavoriteDayDesc.text =currentDay.weather.get(0).description
         // holder.binding.tvDailyMaxDegree.text = "/"+currentDay.temp.max.toString()
-        holder.binding.tvDayFavoriteMinDegree.text = currentDay.temp.min.toString() +  "/" +currentDay.temp.max.toString() + "K"
+        var minTemp = String.format("%.0f",currentDay.temp.min)
+        var maxTemp = String.format("%.0f",currentDay.temp.max)
+
+        holder.binding.tvDayFavoriteMinDegree.text =  minTemp + "/" +maxTemp
 
         //tv_daily_max_degree
     }

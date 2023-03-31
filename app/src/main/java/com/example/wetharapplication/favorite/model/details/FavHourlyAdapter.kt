@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.wetharapplication.databinding.FavHourlyViewBinding
 import com.example.wetharapplication.model.Current
+import com.example.wetharapplication.util.MyUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,19 +24,16 @@ class FavHourlyAdapter (private val hoursWeather: List<Current>, var context: Co
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var currentHour = hoursWeather.get(position)
-        var date= Date(currentHour.dt*1000L)
-        var sdf= SimpleDateFormat("hh:mm a")
-        sdf.timeZone= TimeZone.getDefault()
-        var formatedData=sdf.format(date)
-        holder.binding.tvFavoriteHour.text = formatedData.toString()
-        holder.binding.tvFavoriteHourDegree.text = currentHour.temp.toString()
+        var formatedData = MyUtil().convertToHour(currentHour.dt)
+        holder.binding.tvFavoriteHour.text = formatedData
+        var temp = String.format("%.0f",currentHour.temp)
+        holder.binding.tvFavoriteHourDegree.text = temp
         Glide.with(context).load("https://openweathermap.org/img/wn/${currentHour.weather.get(0).icon}@2x.png").into(binding.favoriteHourImagView)
-        Log.i("Mina" , currentHour.dt.toString() )
+
     }
 
     override fun getItemCount(): Int {
         return hoursWeather.size-24
-
     }
 
     inner class ViewHolder(var binding:FavHourlyViewBinding) : RecyclerView.ViewHolder(binding.root) {

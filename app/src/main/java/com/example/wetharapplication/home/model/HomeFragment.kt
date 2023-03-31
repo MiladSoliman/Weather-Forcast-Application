@@ -21,6 +21,7 @@ import com.example.wetharapplication.model.Current
 import com.example.wetharapplication.model.Daily
 import com.example.wetharapplication.model.Repository
 import com.example.wetharapplication.network.WeatherClient
+import com.example.wetharapplication.util.MyUtil
 import java.text.SimpleDateFormat
 
 class HomeFragment : Fragment() {
@@ -80,10 +81,13 @@ class HomeFragment : Fragment() {
                     Log.i("ya rab", "" +unites)
                     binding.tvCity.text = response.timezone
                     binding.tvDescription.text = response.current?.weather?.get(0)?.description
-                    var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ")
-                    var currentDate = simpleDate.format(response.current?.dt?.times(1000L) ?: 0)
-                    binding.tvDate.text = currentDate.toString()
-                    binding.tvHomedegree.text = response.current?.temp.toString()
+                   /* var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ")
+                    var myCurrentDate = simpleDate.format(response.current?.dt?.times(1000L) ?: 0)*/
+                    var myCurrentDate = MyUtil().convertDataAndTime(response.current?.dt)
+                    binding.tvDate.text = myCurrentDate
+                    var char = MyUtil().getDegreeUnit(unites)
+                    var temp = String.format("%.0f",response.current?.temp)
+                    binding.tvHomedegree.text =  temp + char
                     binding.tvEditHumidity.text = response.current?.humidity.toString()
                     binding.tvEditCloud.text = response.current?.clouds.toString()
                     binding.tvEditIsabilty.text = response.current?.visibility.toString()
