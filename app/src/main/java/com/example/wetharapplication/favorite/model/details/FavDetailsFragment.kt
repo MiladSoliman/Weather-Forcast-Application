@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -25,27 +27,28 @@ import com.example.wetharapplication.home.model.HourlyAdapter
 import com.example.wetharapplication.home.viewmodel.HomeViewModel
 import com.example.wetharapplication.home.viewmodel.HomeViewModelFactory
 import com.example.wetharapplication.map.MapsFragmentArgs
-import com.example.wetharapplication.model.Current
-import com.example.wetharapplication.model.Daily
-import com.example.wetharapplication.model.MyResponse
-import com.example.wetharapplication.model.Repository
+import com.example.wetharapplication.model.*
 import com.example.wetharapplication.network.InternetCheck
 import com.example.wetharapplication.network.WeatherClient
+import com.example.wetharapplication.util.MyUtil
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class FavDetailsFragment : Fragment() {
     lateinit var binding: FragmentFavDetailsBinding
     lateinit var detailsFactory: FavDetailsModelFactory
-    lateinit var detilsModel:FavDetailsViewModel
+    lateinit var detilsModel: FavDetailsViewModel
     lateinit var hoursList: List<Current>
     lateinit var daysList: List<Daily>
-    var latitude =0.0
-    var longitude =0.0
+    var latitude = 0.0
+    var longitude = 0.0
     val args: FavDetailsFragmentArgs by navArgs()
-    lateinit var set:SharedPreferences
-    lateinit var favlanguage:String
-    lateinit var favunites:String
+    lateinit var set: SharedPreferences
+    lateinit var favlanguage: String
+    lateinit var favunites: String
+    lateinit var response: MyResponse
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         latitude = args.lat.toDouble()
@@ -57,64 +60,135 @@ class FavDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding =FragmentFavDetailsBinding.inflate(inflater, container, false)
+        binding = FragmentFavDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-         var context:Context = requireContext()
-        detailsFactory =FavDetailsModelFactory(Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(context)) )
-        detilsModel = ViewModelProvider(requireActivity(),  detailsFactory).get(FavDetailsViewModel::class.java)
+        var context: Context = requireContext()
+        detailsFactory = FavDetailsModelFactory(Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(context))
+        )
+        detilsModel = ViewModelProvider(requireActivity(), detailsFactory).get(FavDetailsViewModel::class.java)
         set = activity?.getSharedPreferences("My Shared", Context.MODE_PRIVATE)!!
-        favlanguage = set?.getString("language","en")!!
-        favunites =  set?.getString("units","standard")!!
+        favlanguage = set?.getString("language", "en")!!
+        favunites = set?.getString("units", "standard")!!
 
-        if(InternetCheck.getConnectivity(context) == true) {
-            detilsModel.getWeatherFromApi(latitude, longitude, favunites,favlanguage)
+        if (InternetCheck.getConnectivity(context) == true) {
+            detilsModel.getWeatherFromApi(latitude, longitude, favunites, favlanguage)
             //update Weather
-            detilsModel.UpdateWeather(latitude,longitude)
-        }else{
-            var lat2 = String.format("%.4f",latitude).toDouble()
-            var long2 = String.format("%.4f",longitude).toDouble()
-            detilsModel.getLocalWeather(lat2,long2)
-            val snakbar = Snackbar.make(view,context.resources.getString(R.string.snakbar_msg),Snackbar.LENGTH_LONG).setAction("Action",null)
+            detilsModel.UpdateWeather(latitude, longitude)
+        } else {
+            var lat2 = String.format("%.4f", latitude).toDouble()
+            var long2 = String.format("%.4f", longitude).toDouble()
+            detilsModel.getLocalWeather(lat2, long2)
+            val snakbar = Snackbar.make(
+                view,
+                context.resources.getString(R.string.snakbar_msg),
+                Snackbar.LENGTH_LONG
+            ).setAction("Action", null)
             snakbar.show()
         }
+        lifecycleScope.launch {
+            detilsModel._detailsOfFavWeather.collectLatest { result ->
+                when (result) {
+                    is ApiState.Loading -> {
+                        binding.favprogressBar.visibility = View.VISIBLE
+                        hideData()
+                    }
+                    is ApiState.Success -> {
+                        binding.favprogressBar.visibility = View.GONE
+                        response = result.data
+                        showData()
+                        setData()
+                    }
+                    else -> {
+                        binding.favprogressBar.visibility = View.GONE
+                        val snakbar = Snackbar.make(requireView(), "There is an Erorr , Please check your Network", Snackbar.LENGTH_LONG).setAction("Action", null)
+                        snakbar.show()
+                    }
+                }
 
-        detilsModel._FavWeathers.observe(requireActivity()){response->
-            binding.tvFavCity.text =response.timezone
-            binding.tvFavDescription.text = response.current?.weather?.get(0)?.description
-            var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ")
-            var currentDate = simpleDate.format(response.current?.dt?.times(1000L) ?: 0)
-            binding.tvFavDate.text = currentDate.toString()
-            binding.tvFavHomedegree.text = response.current?.temp.toString()
-            binding.tvFavEditHumidity.text = response.current?.humidity.toString()
-            binding.tvFavEditCloud.text = response.current?.clouds.toString()
-            binding.tvFavEditIsabilty.text = response.current?.visibility.toString()
-            binding.tvFavEditPressur.text = response.current?.pressure.toString() + " " + "hpa"
-            binding.tvFavEditUv.text = response.current?.uvi.toString()
-            binding.tvFavEditWindspeed.text = response.current?.windSpeed.toString()
-            Glide.with(context)
-                .load("https://openweathermap.org/img/wn/${response.current?.weather?.get(0)?.icon}@2x.png")
-                .into(binding.favImage)
-            Log.i("dayicon", "" + response.current?.weather?.get(0)?.icon)
-            hoursList = response.hourly
-            Log.i("Ehab", response.hourly.toString())
-            binding.favHourlyRecyclerview.apply {
-                adapter = FavHourlyAdapter(hoursList, context)
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             }
-            daysList = response.daily
-            binding.favDailyRecyclerview.apply {
-                adapter = FavDailyAdapter(daysList, context)
-                layoutManager = LinearLayoutManager(context)
-            }
-
         }
-        }
+    }
 
- }
+    private fun hideData(){
+        binding.tvFavCity.visibility = View.GONE
+        binding.tvFavDate.visibility = View.GONE
+        binding.tvFavDescription.visibility = View.GONE
+        binding.degreedCard.visibility = View.GONE
+        binding.cardView7.visibility = View.GONE
+        binding.cardView9.visibility = View.GONE
+        binding.cardView10.visibility = View.GONE
+        binding.cardView11.visibility = View.GONE
+        binding.cardView12.visibility = View.GONE
+        binding.cardView13.visibility = View.GONE
+        binding.favHourlyRecyclerview.visibility = View.GONE
+        binding.favDailyRecyclerview.visibility=View.GONE
+    }
+
+    private fun showData(){
+        binding.tvFavCity.visibility = View.VISIBLE
+        binding.tvFavDate.visibility = View.VISIBLE
+        binding.tvFavDescription.visibility = View.VISIBLE
+        binding.degreedCard.visibility = View.VISIBLE
+        binding.cardView7.visibility = View.VISIBLE
+        binding.cardView9.visibility = View.VISIBLE
+        binding.cardView10.visibility = View.VISIBLE
+        binding.cardView11.visibility = View.VISIBLE
+        binding.cardView12.visibility = View.VISIBLE
+        binding.cardView13.visibility = View.VISIBLE
+        binding.favHourlyRecyclerview.visibility = View.VISIBLE
+        binding.favDailyRecyclerview.visibility=View.VISIBLE
+    }
+
+    private fun setData(){
+        binding.tvFavCity.text = response.timezone
+        binding.tvFavDescription.text = response.current?.weather?.get(0)?.description
+        var myCurrentDate = MyUtil().convertDataAndTime(response.current?.dt)
+        binding.tvFavDate.text = myCurrentDate
+        var temp = String.format("%.0f", response.current?.temp)
+        var char = MyUtil().getDegreeUnit(favunites)
+        binding.tvFavHomedegree.text = temp + char
+        binding.tvFavEditHumidity.text = response.current?.humidity.toString()
+        binding.tvFavEditCloud.text = response.current?.clouds.toString()
+        binding.tvFavEditIsabilty.text = response.current?.visibility.toString()
+        binding.tvFavEditPressur.text =
+            response.current?.pressure.toString() + " " + "hpa"
+        binding.tvFavEditUv.text = response.current?.uvi.toString()
+        binding.tvFavEditWindspeed.text = response.current?.windSpeed.toString()
+        Glide.with(requireContext())
+            .load("https://openweathermap.org/img/wn/${response.current?.weather?.get(0)?.icon}@2x.png")
+            .into(binding.favImage)
+        Log.i("dayicon", "" + response.current?.weather?.get(0)?.icon)
+        hoursList = response.hourly
+        Log.i("Ehab", response.hourly.toString())
+        binding.favHourlyRecyclerview.apply {
+            adapter = FavHourlyAdapter(hoursList, context)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
+        daysList = response.daily
+        binding.favDailyRecyclerview.apply {
+            adapter = FavDailyAdapter(daysList, context)
+            layoutManager = LinearLayoutManager(context)
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

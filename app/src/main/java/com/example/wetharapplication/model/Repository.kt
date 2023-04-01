@@ -17,7 +17,7 @@ class Repository private constructor (var remoteSource: RemoteSource , var local
         }
     }
 
-    override suspend fun getDataFromApi(lat: Double, lon: Double , unites :String , language:String): MyResponse {
+    override suspend fun getDataFromApi(lat: Double, lon: Double , unites :String , language:String): Flow<MyResponse> {
         return remoteSource.getDataFromApi(lat , lon ,unites,language )
     }
 

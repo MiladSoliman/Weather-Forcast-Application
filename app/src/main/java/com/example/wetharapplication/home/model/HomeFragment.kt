@@ -9,19 +9,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.wetharapplication.R
 import com.example.wetharapplication.database.ConcreteLocalSource
 import com.example.wetharapplication.databinding.FragmentHomeBinding
 import com.example.wetharapplication.home.viewmodel.HomeViewModel
 import com.example.wetharapplication.home.viewmodel.HomeViewModelFactory
-import com.example.wetharapplication.model.Current
-import com.example.wetharapplication.model.Daily
-import com.example.wetharapplication.model.Repository
+import com.example.wetharapplication.model.*
 import com.example.wetharapplication.network.WeatherClient
 import com.example.wetharapplication.util.MyUtil
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 class HomeFragment : Fragment() {
@@ -36,6 +40,7 @@ class HomeFragment : Fragment() {
     lateinit var se: SharedPreferences
     lateinit var language: String
     lateinit var unites: String
+    lateinit var response :MyResponse
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,45 +86,96 @@ class HomeFragment : Fragment() {
             homeModel =
                 ViewModelProvider(requireActivity(), homeFactory).get(HomeViewModel::class.java)
             homeModel.getWeather(lat, long, unites, language)
-            homeModel._myResponse.observe(requireActivity()) { response ->
-                if (response != null) {
-                    Log.i("ya rab", "" + unites)
-                    binding.tvCity.text = response.timezone
-                    binding.tvDescription.text = response.current?.weather?.get(0)?.description
-                    /* var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ")
-                     var myCurrentDate = simpleDate.format(response.current?.dt?.times(1000L) ?: 0)*/
-                    var myCurrentDate = MyUtil().convertDataAndTime(response.current?.dt)
-                    binding.tvDate.text = myCurrentDate
-                    var char = MyUtil().getDegreeUnit(unites)
-                    var temp = String.format("%.0f", response.current?.temp)
-                    binding.tvHomedegree.text = temp + char
-                    binding.tvEditHumidity.text = response.current?.humidity.toString()
-                    binding.tvEditCloud.text = response.current?.clouds.toString()
-                    binding.tvEditIsabilty.text = response.current?.visibility.toString()
-                    binding.tvEditPressur.text = response.current?.pressure.toString() + " " + "hpa"
-                    binding.tvEditUv.text = response.current?.uvi.toString()
-                    binding.tvEditWindspeed.text = response.current?.windSpeed.toString()
-                    Glide.with(requireContext())
-                        .load("https://openweathermap.org/img/wn/${response.current?.weather?.get(0)?.icon}@2x.png")
-                        .into(binding.homeImage)
-                    Log.i("dayicon", "" + response.current?.weather?.get(0)?.icon)
-                    hoursList = response.hourly
-                    Log.i("Ehab", response.hourly.toString())
-                    binding.hourlyRecyclerview.apply {
-                        adapter = HourlyAdapter(hoursList, context)
-                        layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                    }
-                    daysList = response.daily
-                    binding.dailyRecyclerview.apply {
-                        adapter = DailyAdapter(daysList, context)
-                        layoutManager = LinearLayoutManager(context)
-                    }
 
+            lifecycleScope.launch {
+                homeModel._myResponse.collectLatest { result->
+                    when(result){
+                        is ApiState.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                            hideData()
+                        }
+                        is ApiState.Success -> {
+                            binding.progressBar.visibility = View.GONE
+                            response = result.data
+                            showData()
+                            setData()
+                        }
+                        else ->{
+                            binding.progressBar.visibility = View.GONE
+                            val snakbar = Snackbar.make(requireView(), "There is an Erorr , Please check your Network", Snackbar.LENGTH_LONG).setAction("Action", null)
+                            snakbar.show()
+                        }
+                    }
                 }
+            }
             }
 
         }
+
+
+    private fun hideData(){
+        binding.tvCity.visibility = View.GONE
+        binding.tvDate.visibility = View.GONE
+        binding.tvDescription.visibility = View.GONE
+        binding.degreedCard.visibility = View.GONE
+        binding.cardView7.visibility = View.GONE
+        binding.cardView9.visibility = View.GONE
+        binding.cardView10.visibility = View.GONE
+        binding.cardView11.visibility = View.GONE
+        binding.cardView12.visibility = View.GONE
+        binding.cardView13.visibility = View.GONE
+        binding.hourlyRecyclerview.visibility = View.GONE
+        binding.dailyRecyclerview.visibility=View.GONE
+
+
     }
 
+    private fun showData() {
+        binding.tvCity.visibility = View.VISIBLE
+        binding.tvDate.visibility = View.VISIBLE
+        binding.tvDescription.visibility = View.VISIBLE
+        binding.degreedCard.visibility = View.VISIBLE
+        binding.cardView7.visibility = View.VISIBLE
+        binding.cardView9.visibility = View.VISIBLE
+        binding.cardView10.visibility = View.VISIBLE
+        binding.cardView11.visibility = View.VISIBLE
+        binding.cardView12.visibility = View.VISIBLE
+        binding.cardView13.visibility = View.VISIBLE
+        binding.hourlyRecyclerview.visibility = View.VISIBLE
+        binding.dailyRecyclerview.visibility=View.VISIBLE
+    }
+
+    private fun setData(){
+        binding.tvCity.text = response.timezone
+        binding.tvDescription.text = response.current?.weather?.get(0)?.description
+        var myCurrentDate = MyUtil().convertDataAndTime(response.current?.dt)
+        binding.tvDate.text = myCurrentDate
+        var char = MyUtil().getDegreeUnit(unites)
+        var temp = String.format("%.0f", response.current?.temp)
+        binding.tvHomedegree.text = temp + char
+        binding.tvEditHumidity.text = response.current?.humidity.toString()
+        binding.tvEditCloud.text = response.current?.clouds.toString()
+        binding.tvEditIsabilty.text = response.current?.visibility.toString()
+        binding.tvEditPressur.text = response.current?.pressure.toString() + " " + "hpa"
+        binding.tvEditUv.text = response.current?.uvi.toString()
+        binding.tvEditWindspeed.text = response.current?.windSpeed.toString()
+        Glide.with(requireContext())
+            .load("https://openweathermap.org/img/wn/${response.current?.weather?.get(0)?.icon}@2x.png")
+            .into(binding.homeImage)
+        Log.i("dayicon", "" + response.current?.weather?.get(0)?.icon)
+        hoursList = response.hourly
+        Log.i("Ehab", response.hourly.toString())
+        binding.hourlyRecyclerview.apply {
+            adapter = HourlyAdapter(hoursList, context)
+            layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
+        daysList = response.daily
+        binding.dailyRecyclerview.apply {
+            adapter = DailyAdapter(daysList, context)
+            layoutManager = LinearLayoutManager(context)
+        }
+    }
 }
+
+
