@@ -73,7 +73,6 @@ class IntialDialogFragment : DialogFragment() {
             }
         }
 
-
     }
 
         private fun saveInSharedPrefernce(lat: Double, lon: Double) {
@@ -93,7 +92,6 @@ class IntialDialogFragment : DialogFragment() {
             var intent = Intent(requireActivity(), MainActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
-
         }
 
     override fun onStart() {
@@ -106,4 +104,4 @@ class IntialDialogFragment : DialogFragment() {
     }
 
 
-    }
+}

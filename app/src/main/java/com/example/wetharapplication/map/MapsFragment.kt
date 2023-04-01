@@ -126,13 +126,6 @@ class MapsFragment : Fragment() {
                    }
                Navigation.findNavController(view).navigate(R.id.From_Map_To_Home)
            }else{
-              /* activity?.getSharedPreferences("My Shared", Context.MODE_PRIVATE)?.edit()
-                   ?.apply {
-                       putFloat("lat",lat.toFloat())
-                       putFloat("long",lon.toFloat())
-                       apply()
-                       Log.i("my Fav location",""+lat + lon )
-                   }*/
                favFactory =
                    FavViewModelFactory (Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(requireContext())) )
                favModel =

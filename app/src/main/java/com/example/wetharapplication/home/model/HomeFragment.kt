@@ -27,19 +27,19 @@ import java.text.SimpleDateFormat
 class HomeFragment : Fragment() {
     lateinit var homeFactory: HomeViewModelFactory
     lateinit var homeModel: HomeViewModel
-    lateinit var binding:FragmentHomeBinding
+    lateinit var binding: FragmentHomeBinding
     lateinit var hoursList: List<Current>
     lateinit var daysList: List<Daily>
-    var isMap :Boolean = false
-    private var lat:Double =0.0
-    private var long :Double =0.0
-    lateinit var se :SharedPreferences
-    lateinit var language:String
-    lateinit var unites:String
+    var isMap: Boolean = false
+    private var lat: Double = 0.0
+    private var long: Double = 0.0
+    lateinit var se: SharedPreferences
+    lateinit var language: String
+    lateinit var unites: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-         se =  activity?.getSharedPreferences("My Shared",MODE_PRIVATE)!!
+        se = activity?.getSharedPreferences("My Shared", MODE_PRIVATE)!!
 
 
     }
@@ -60,34 +60,39 @@ class HomeFragment : Fragment() {
     }
 
     override fun onResume() {
-        isMap = se?.getBoolean("Map",false) !!
+        isMap = se?.getBoolean("Map", false)!!
         var context: Context = requireContext()
         super.onResume()
         if (isMap) {
-              val action = HomeFragmentDirections.homtMap("home")
-              Navigation.findNavController(requireView()).navigate(action)
-        } else{
-            lat = se?.getFloat("lat" ,17f)?.toDouble() !!
-            long =  se?.getFloat("long" ,7f)?.toDouble() !!
-            language = se?.getString("language","en")!!
-            unites= se?.getString("units","standard")!!
+            val action = HomeFragmentDirections.homtMap("home")
+            Navigation.findNavController(requireView()).navigate(action)
+        } else {
+            lat = se?.getFloat("lat", 17f)?.toDouble()!!
+            long = se?.getFloat("long", 7f)?.toDouble()!!
+            language = se?.getString("language", "en")!!
+            unites = se?.getString("units", "standard")!!
             homeFactory =
-                HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance(),ConcreteLocalSource.getInstance(context)) )
+                HomeViewModelFactory(
+                    Repository.getInstance(
+                        WeatherClient.getInstance(),
+                        ConcreteLocalSource.getInstance(context)
+                    )
+                )
             homeModel =
                 ViewModelProvider(requireActivity(), homeFactory).get(HomeViewModel::class.java)
-            homeModel.getWeather(lat , long ,unites,language)
+            homeModel.getWeather(lat, long, unites, language)
             homeModel._myResponse.observe(requireActivity()) { response ->
                 if (response != null) {
-                    Log.i("ya rab", "" +unites)
+                    Log.i("ya rab", "" + unites)
                     binding.tvCity.text = response.timezone
                     binding.tvDescription.text = response.current?.weather?.get(0)?.description
-                   /* var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ")
-                    var myCurrentDate = simpleDate.format(response.current?.dt?.times(1000L) ?: 0)*/
+                    /* var simpleDate = SimpleDateFormat("dd/M/yyyy - hh:mm:a ")
+                     var myCurrentDate = simpleDate.format(response.current?.dt?.times(1000L) ?: 0)*/
                     var myCurrentDate = MyUtil().convertDataAndTime(response.current?.dt)
                     binding.tvDate.text = myCurrentDate
                     var char = MyUtil().getDegreeUnit(unites)
-                    var temp = String.format("%.0f",response.current?.temp)
-                    binding.tvHomedegree.text =  temp + char
+                    var temp = String.format("%.0f", response.current?.temp)
+                    binding.tvHomedegree.text = temp + char
                     binding.tvEditHumidity.text = response.current?.humidity.toString()
                     binding.tvEditCloud.text = response.current?.clouds.toString()
                     binding.tvEditIsabilty.text = response.current?.visibility.toString()
