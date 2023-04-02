@@ -137,97 +137,40 @@
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView4"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="75dp"
-        android:backgroundTint="#2a4359"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView3"
-        app:layout_constraintStart_toStartOf="@+id/cardView3"
-        app:layout_constraintTop_toBottomOf="@+id/cardView3">
-
-        <TextView
-            android:id="@+id/tv_windSpeed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:text="@string/tv_windSpeed"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="#2a4359"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView4"
-        app:layout_constraintStart_toStartOf="@+id/cardView4"
-        app:layout_constraintTop_toBottomOf="@+id/cardView4">
-
-        <RadioGroup
-            android:id="@+id/wind_radiogroup"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RadioButton
-                android:id="@+id/radio_meter"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:buttonTint="@color/white"
-                android:text="@string/radio_meter"
-                android:textColor="@color/white"
-                android:textStyle="bold"></RadioButton>
-
-            <RadioButton
-                android:id="@+id/radio_mile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:buttonTint="@color/white"
-                android:text="@string/radio_mile"
-                android:textColor="@color/white"
-                android:textStyle="bold"></RadioButton>
-
-        </RadioGroup>
-
-    </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView6"
         android:layout_width="150dp"
         android:layout_height="30dp"
+        android:layout_marginTop="100dp"
         android:backgroundTint="#2a4359"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="@+id/cardView5"
-        app:layout_constraintStart_toStartOf="@+id/cardView5"
-        app:layout_constraintTop_toTopOf="@+id/cardView4">
+        app:layout_constraintStart_toStartOf="@+id/cardView3"
+        app:layout_constraintTop_toBottomOf="@+id/cardView5">
 
         <TextView
             android:id="@+id/tv_tempreture"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:text="@string/tv_tempreture"
+            android:layout_marginLeft="45dp"
+            android:text="@string/tv_unites"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="150dp"
+        android:id="@+id/cardView4"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="#2a4359"
         app:cardCornerRadius="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView6"
-        app:layout_constraintStart_toStartOf="@+id/cardView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView6">
 
         <RadioGroup
@@ -236,32 +179,32 @@
             android:layout_height="match_parent">
 
             <RadioButton
-                android:id="@+id/radio_cel"
+                android:id="@+id/radio_standard"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:buttonTint="@color/white"
-                android:text="@string/radio_cel"
+                android:text="@string/tv_standard"
                 android:textColor="@color/white"
                 android:textStyle="bold"></RadioButton>
 
             <RadioButton
-                android:id="@+id/radio_feh"
+                android:id="@+id/radio_metric"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:buttonTint="@color/white"
-                android:text="@string/radio_fah"
+                android:text="@string/tv_metric"
                 android:textColor="@color/white"
                 android:textStyle="bold"></RadioButton>
 
             <RadioButton
-                android:id="@+id/radio_kel"
+                android:id="@+id/radio_imprial"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:buttonTint="@color/white"
-                android:text="@string/radio_kel"
+                android:text="@string/tv_imprial"
                 android:textColor="@color/white"
                 android:textStyle="bold"></RadioButton>
 

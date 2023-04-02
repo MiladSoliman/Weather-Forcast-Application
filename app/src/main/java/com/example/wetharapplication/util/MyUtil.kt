@@ -11,14 +11,42 @@ class MyUtil {
     }
 
 
-    fun getDegreeUnit(unit:String):String{
-        var char = "ْ K"
-        when(unit){
-            "standard" -> {char = "ْ K"}
-            "metric" -> { char = "ْ C" }
-            "imperial" -> {char = "ْ F" }
+    fun getDegreeUnit(unit:String , language:String):String{
+        var char = "  ْ K"
+        if (language.equals("en")){
+            when(unit){
+                "standard" -> {char = "ْ K"}
+                "metric" -> { char = "ْ C" }
+                "imperial" -> {char = "ْ F" }
+            }
+        }else{
+            when(unit){
+                "standard" -> {char = "  ك  ْ "}
+                "metric" -> { char =  "  س ْ " }
+                "imperial" -> {char = "  ف ْ " }
+            }
+        }
+
+        return char
+    }
+
+    fun getWindSpeedUnit(unit: String , language: String):String{
+        var char = "m/s"
+        if (language.equals("en")){
+            when(unit){
+                "standard" -> {char = "m/s"}
+                "metric" -> { char = "m/s" }
+                "imperial" -> {char = "M/h" }
+            }
+        }else{
+            when(unit){
+                "standard" -> {char = "متر/ث"}
+                "metric" -> { char =   "متر/ث"}
+                "imperial" -> {char = "ميل/س" }
+            }
         }
         return char
+
     }
 
 

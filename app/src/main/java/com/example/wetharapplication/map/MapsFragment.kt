@@ -91,7 +91,7 @@ class MapsFragment : Fragment() {
         }
         if (list.size > 0) {
             var adress: Address = list.get(0)
-            var location: String = adress.adminArea
+          //  var location: String = adress.adminArea
             lat = adress.latitude
             lon = adress.longitude
             goToLatAndLonf(lat, lon, 17f)

@@ -21,6 +21,7 @@ import com.example.wetharapplication.databinding.FragmentHomeBinding
 import com.example.wetharapplication.home.viewmodel.HomeViewModel
 import com.example.wetharapplication.home.viewmodel.HomeViewModelFactory
 import com.example.wetharapplication.model.*
+import com.example.wetharapplication.network.InternetCheck
 import com.example.wetharapplication.network.WeatherClient
 import com.example.wetharapplication.util.MyUtil
 import com.google.android.material.snackbar.Snackbar
@@ -61,7 +62,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
     }
 
     override fun onResume() {
@@ -71,21 +71,17 @@ class HomeFragment : Fragment() {
         if (isMap) {
             val action = HomeFragmentDirections.homtMap("home")
             Navigation.findNavController(requireView()).navigate(action)
-        } else {
+        }
             lat = se?.getFloat("lat", 17f)?.toDouble()!!
             long = se?.getFloat("long", 7f)?.toDouble()!!
             language = se?.getString("language", "en")!!
             unites = se?.getString("units", "standard")!!
-            homeFactory =
-                HomeViewModelFactory(
-                    Repository.getInstance(
-                        WeatherClient.getInstance(),
-                        ConcreteLocalSource.getInstance(context)
-                    )
-                )
-            homeModel =
-                ViewModelProvider(requireActivity(), homeFactory).get(HomeViewModel::class.java)
-            homeModel.getWeather(lat, long, unites, language)
+            homeFactory = HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(context)))
+            homeModel = ViewModelProvider(requireActivity(), homeFactory).get(HomeViewModel::class.java)
+
+        //check internet
+                homeModel.getWeather(lat, long, unites, language)
+
 
             lifecycleScope.launch {
                 homeModel._myResponse.collectLatest { result->
@@ -108,7 +104,7 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-            }
+
 
         }
 
@@ -150,21 +146,21 @@ class HomeFragment : Fragment() {
         binding.tvDescription.text = response.current?.weather?.get(0)?.description
         var myCurrentDate = MyUtil().convertDataAndTime(response.current?.dt)
         binding.tvDate.text = myCurrentDate
-        var char = MyUtil().getDegreeUnit(unites)
+        var char = MyUtil().getDegreeUnit(unites , language)
         var temp = String.format("%.0f", response.current?.temp)
         binding.tvHomedegree.text = temp + char
-        binding.tvEditHumidity.text = response.current?.humidity.toString()
+        binding.tvEditHumidity.text = response.current?.humidity.toString() + " " + "%"
         binding.tvEditCloud.text = response.current?.clouds.toString()
-        binding.tvEditIsabilty.text = response.current?.visibility.toString()
+        binding.tvEditIsabilty.text = response.current?.visibility.toString()+ " " + "m"
         binding.tvEditPressur.text = response.current?.pressure.toString() + " " + "hpa"
         binding.tvEditUv.text = response.current?.uvi.toString()
-        binding.tvEditWindspeed.text = response.current?.windSpeed.toString()
+        var wChar = MyUtil().getWindSpeedUnit(unites,language)
+        binding.tvEditWindspeed.text = response.current?.windSpeed.toString() + wChar
         Glide.with(requireContext())
             .load("https://openweathermap.org/img/wn/${response.current?.weather?.get(0)?.icon}@2x.png")
             .into(binding.homeImage)
-        Log.i("dayicon", "" + response.current?.weather?.get(0)?.icon)
         hoursList = response.hourly
-        Log.i("Ehab", response.hourly.toString())
+
         binding.hourlyRecyclerview.apply {
             adapter = HourlyAdapter(hoursList, context)
             layoutManager =

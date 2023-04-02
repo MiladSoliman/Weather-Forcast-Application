@@ -1,5 +1,6 @@
 package com.example.wetharapplication.favorite.viewmodel.myFav
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,11 +33,12 @@ class FavVeiwModel (private var myRepo: RepositoryInterface) : ViewModel(){
 
 
    fun getFavouriteCountries(){
-    viewModelScope.launch (Dispatchers.IO){
-        myRepo.getStoredCountries().collect(){
+    viewModelScope.launch (Dispatchers.IO) {
+        myRepo.getStoredCountries().collect() {
             (FavWeathers.postValue(it))
         }
     }
+
    }
 
    fun deletCountry(myResponse: MyResponse){

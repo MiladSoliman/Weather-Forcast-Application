@@ -49,6 +49,7 @@ class FavoriteFragment : Fragment() , OnRemove ,OnClick{
        }
 
        favModel.getFavouriteCountries()
+
        favModel._FavWeathers.observe(viewLifecycleOwner){
          myFavWeather = it
          binding.FavRecyclerView.apply {
