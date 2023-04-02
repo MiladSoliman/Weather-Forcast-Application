@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.wetharapplication.R
@@ -29,6 +30,7 @@ import com.example.wetharapplication.favorite.viewmodel.myFav.FavVeiwModel
 import com.example.wetharapplication.favorite.viewmodel.myFav.FavViewModelFactory
 import com.example.wetharapplication.model.Repository
 import com.example.wetharapplication.network.WeatherClient
+import java.util.*
 
 class MapsFragment : Fragment() {
     lateinit var binding: FragmentMapsBinding
@@ -131,8 +133,14 @@ class MapsFragment : Fragment() {
                favModel =
                    ViewModelProvider(requireActivity(),  favFactory).get(FavVeiwModel::class.java)
                Log.i("fav","" +lat+lon)
-               favModel.insertWeather(lat,lon,)
-               Navigation.findNavController(view).navigate(R.id.FromMapToFav)
+               val geocoder = Geocoder(requireContext(), Locale.getDefault())
+               var addressList:List<Address> = geocoder.getFromLocation(lat,lon,1) as List<Address>
+               if (addressList.size!=0 && !addressList.isEmpty() ) {
+                   favModel.insertWeather(lat, lon,)
+                   Navigation.findNavController(view).navigate(R.id.FromMapToFav)
+               }else{
+                   Toast.makeText(requireContext(),"Please Choose Valid Location",Toast.LENGTH_SHORT).show()
+               }
            }
         }
 

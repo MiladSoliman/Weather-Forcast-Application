@@ -34,9 +34,13 @@ class FavAdapter (private val favWeather: List<MyResponse>, var context: Context
       var response : MyResponse = favWeather.get(position)
         val geocoder = Geocoder(context, Locale.getDefault())
         var address:List<Address> = geocoder.getFromLocation(response.lat,response.lon,1) as List<Address>
-        var area = address.get(0).adminArea
-        var country = address.get(0).subAdminArea
-       holder.binding.tvFavName.text = "$area $country"
+        if (address.size!=0 && !address.isEmpty()) {
+            var area = address.get(0).adminArea
+            var country = address.get(0).subAdminArea
+            holder.binding.tvFavName.text = "$area $country"
+        }else{
+            holder.binding.tvFavName.text = "Address Not Found"
+        }
 
        holder.binding.deleteImage.setOnClickListener {
            val yes = context.resources.getString(R.string.delete_accepet)

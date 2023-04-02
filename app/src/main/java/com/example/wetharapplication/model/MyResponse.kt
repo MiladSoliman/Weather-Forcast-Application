@@ -15,7 +15,6 @@ data class MyResponse  (
     val current: Current?,
     val hourly: List<Current>,
     val daily: List<Daily>,
-
 ) : Serializable{
     constructor():this(0.0 , 0.0 , null ,0L ,null, listOf() , listOf()  )
 }
