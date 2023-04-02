@@ -18,8 +18,7 @@ import com.example.wetharapplication.databinding.FragmentIntialDialogBinding
 import com.example.wetharapplication.dialog.viewmodel.IntialViewModel
 import com.example.wetharapplication.dialog.viewmodel.IntialViewModelFactory
 import com.example.wetharapplication.model.Location
-import com.example.wetharapplication.util.Settings
-import com.google.gson.Gson
+
 
 
 class IntialDialogFragment : DialogFragment() {

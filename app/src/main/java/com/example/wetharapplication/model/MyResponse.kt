@@ -15,10 +15,9 @@ data class MyResponse  (
     val current: Current?,
     val hourly: List<Current>,
     val daily: List<Daily>,
-    @ColumnInfo(name = "STATUES")
-    var isFav :String
+
 ) : Serializable{
-    constructor():this(0.0 , 0.0 , null ,0L ,null, listOf() , listOf() , ""  )
+    constructor():this(0.0 , 0.0 , null ,0L ,null, listOf() , listOf()  )
 }
 
 data class Current (

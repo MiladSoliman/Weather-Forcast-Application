@@ -44,7 +44,6 @@ class FavDetailsViewModel (private var myRepo: RepositoryInterface) : ViewModel(
         viewModelScope.launch  {
             myRepo.getDataFromApi(lat,long,"metric","ar").catch { e->ApiState.Failure(e) }
                 .collect{
-                    it.isFav = "true"
                     myRepo.insertCountry(it)
                 }
         }

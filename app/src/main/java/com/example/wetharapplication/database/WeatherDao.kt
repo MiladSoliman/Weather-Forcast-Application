@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WeatherDao {
-    @Query("SELECT * From Weather WHERE STATUES LIKE 'true'")
+    @Query("SELECT * From Weather")
     fun getFavWeathers (): Flow<List<MyResponse>>
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCountry(myResponse: MyResponse)
@@ -17,8 +17,7 @@ interface WeatherDao {
     fun getSelectedWeather(latitude:Double ,longitude:Double):Flow<MyResponse>
 
 
-    @Query("SELECT * FROM Weather WHERE STATUES Like 'false' AND lat LIKE :latitude AND lon LIKE :longitude")
-    fun  getSelectedHOMEWeather(latitude:Double ,longitude:Double):Flow<MyResponse>
+
 
 
 

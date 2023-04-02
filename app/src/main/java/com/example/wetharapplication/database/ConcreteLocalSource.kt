@@ -43,7 +43,5 @@ class ConcreteLocalSource private constructor(context: Context) : LocalSource {
         return dao.getSelectedWeather(lat,lon)
     }
 
-    override suspend fun getSelectedHOMEWeather(latitude: Double, longitude: Double): Flow<MyResponse> {
-        return dao.getSelectedHOMEWeather(latitude,longitude)
-    }
+
 }

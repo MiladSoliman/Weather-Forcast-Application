@@ -80,14 +80,8 @@ class HomeFragment : Fragment() {
             homeModel = ViewModelProvider(requireActivity(), homeFactory).get(HomeViewModel::class.java)
 
         //check internet
-            if (InternetCheck.getConnectivity(context)==true){
                 homeModel.getWeather(lat, long, unites, language)
-               homeModel.insertHomeData(lat,long)
-            }else{
-                homeModel.getLocalWeather(lat,long)
-                val snakbar = Snackbar.make(requireView(), context.resources.getString(R.string.snakbar_msg), Snackbar.LENGTH_LONG).setAction("Action", null)
-                snakbar.show()
-            }
+
 
             lifecycleScope.launch {
                 homeModel._myResponse.collectLatest { result->

@@ -25,7 +25,6 @@ class FavVeiwModel (private var myRepo: RepositoryInterface) : ViewModel(){
          // myRepo.insertCountry(myRepo.getDataFromApi(lat,long,"metric","ar").collect)
           myRepo.getDataFromApi(lat,long,"metric","ar").catch { e->ApiState.Failure(e) }
               .collect{
-                  it.isFav = "true"
                   myRepo.insertCountry(it)
               }
        }
@@ -39,7 +38,7 @@ class FavVeiwModel (private var myRepo: RepositoryInterface) : ViewModel(){
             (FavWeathers.postValue(it))
         }
     }
-       Log.i("isFave", ""+FavWeathers.toString())
+
    }
 
    fun deletCountry(myResponse: MyResponse){

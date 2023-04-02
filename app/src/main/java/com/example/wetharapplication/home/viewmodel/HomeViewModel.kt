@@ -40,24 +40,23 @@ class HomeViewModel (private val  myrepo: RepositoryInterface ) : ViewModel()  {
     }
 
 
-    fun insertHomeData(lat:Double , long: Double){
+    /*fun insertHomeData(lat:Double , long: Double){
         viewModelScope.launch  {
             myrepo.getDataFromApi(lat,long,"metric","ar").catch { e->ApiState.Failure(e) }
                 .collect{
-                    it.isFav = "false"
                     myrepo.insertCountry(it)
                 }
         }
-    }
+    }*/
 
 
-   fun getLocalWeather(lat:Double , long:Double ){
+  /* fun getLocalWeather(lat:Double , long:Double ){
         viewModelScope.launch(Dispatchers.IO) {
             myrepo.getSelectedHOMEWeather(lat,long).collect{
                 myResponse.value = ApiState.Success(it)
                 }
-            }
-    }
+        }
+    }*/
 
 
 
