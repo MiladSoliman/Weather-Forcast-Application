@@ -36,4 +36,12 @@ class Repository private constructor (var remoteSource: RemoteSource , var local
     override suspend fun getSelectedWeather(lat: Double, lon: Double): Flow<MyResponse> {
         return localSource.getSelectedWeather(lat,lon)
     }
+
+    override suspend fun getSelectedHOMEWeather(
+        latitude: Double,
+        longitude: Double
+    ): Flow<MyResponse> {
+        return localSource.getSelectedHOMEWeather(latitude,longitude)
+    }
+
 }

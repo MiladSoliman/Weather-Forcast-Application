@@ -1,5 +1,6 @@
 package com.example.wetharapplication.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import java.io.Serializable
@@ -13,9 +14,11 @@ data class MyResponse  (
     @Embedded
     val current: Current?,
     val hourly: List<Current>,
-    val daily: List<Daily>
+    val daily: List<Daily>,
+    @ColumnInfo(name = "STATUES")
+    var isFav :String
 ) : Serializable{
-    constructor():this(0.0 , 0.0 , null ,0L ,null, listOf() , listOf() )
+    constructor():this(0.0 , 0.0 , null ,0L ,null, listOf() , listOf() , ""  )
 }
 
 data class Current (

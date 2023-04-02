@@ -1,5 +1,6 @@
 package com.example.wetharapplication.favorite.viewmodel.myFav
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,6 +25,7 @@ class FavVeiwModel (private var myRepo: RepositoryInterface) : ViewModel(){
          // myRepo.insertCountry(myRepo.getDataFromApi(lat,long,"metric","ar").collect)
           myRepo.getDataFromApi(lat,long,"metric","ar").catch { e->ApiState.Failure(e) }
               .collect{
+                  it.isFav = "true"
                   myRepo.insertCountry(it)
               }
        }
@@ -32,11 +34,12 @@ class FavVeiwModel (private var myRepo: RepositoryInterface) : ViewModel(){
 
 
    fun getFavouriteCountries(){
-    viewModelScope.launch (Dispatchers.IO){
-        myRepo.getStoredCountries().collect(){
+    viewModelScope.launch (Dispatchers.IO) {
+        myRepo.getStoredCountries().collect() {
             (FavWeathers.postValue(it))
         }
     }
+       Log.i("isFave", ""+FavWeathers.toString())
    }
 
    fun deletCountry(myResponse: MyResponse){

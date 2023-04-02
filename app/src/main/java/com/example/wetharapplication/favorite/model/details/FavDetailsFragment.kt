@@ -149,15 +149,16 @@ class FavDetailsFragment : Fragment() {
         var myCurrentDate = MyUtil().convertDataAndTime(response.current?.dt)
         binding.tvFavDate.text = myCurrentDate
         var temp = String.format("%.0f", response.current?.temp)
-        var char = MyUtil().getDegreeUnit(favunites)
+        var char = MyUtil().getDegreeUnit(favunites,favlanguage)
         binding.tvFavHomedegree.text = temp + char
-        binding.tvFavEditHumidity.text = response.current?.humidity.toString()
+        binding.tvFavEditHumidity.text = response.current?.humidity.toString()+ " " + "%"
         binding.tvFavEditCloud.text = response.current?.clouds.toString()
-        binding.tvFavEditIsabilty.text = response.current?.visibility.toString()
+        binding.tvFavEditIsabilty.text = response.current?.visibility.toString() + " " + "m"
         binding.tvFavEditPressur.text =
             response.current?.pressure.toString() + " " + "hpa"
         binding.tvFavEditUv.text = response.current?.uvi.toString()
-        binding.tvFavEditWindspeed.text = response.current?.windSpeed.toString()
+        var wChar = MyUtil().getWindSpeedUnit(favunites,favlanguage)
+        binding.tvFavEditWindspeed.text = response.current?.windSpeed.toString()+wChar
         Glide.with(requireContext())
             .load("https://openweathermap.org/img/wn/${response.current?.weather?.get(0)?.icon}@2x.png")
             .into(binding.favImage)

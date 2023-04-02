@@ -14,6 +14,10 @@
     <string name="radio_mile">Mile/Hour</string>
     <string name="radio_cel">Celsius</string>
     <string name="radio_kel">Kelvin</string>
+    <string name="tv_metric" translatable="false">Metric (Temperature by Celsius and Wind Speed by Meter/Sec )</string>
+    <string name="tv_standard" translatable="false">Standard (Temperature by Kelvin and Wind Speed by Meter/Sec )</string>
+    <string name="tv_imprial" translatable="false">Imprial (Temperature by Fahrenheit and Wind Speed by Mile/Hour)</string>
+    <string name="tv_unites" translatable="false">Unites</string>
     <string name="radio_fah">Fahrenheit</string>
     <string name="tv_Humidity">Humidity</string>
     <string name="tv_Pressure">Pressure</string>

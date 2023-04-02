@@ -19,7 +19,6 @@ import java.util.*
 
 class SettingsFragment : Fragment() {
     lateinit var binding: FragmentSettingsBinding
-    var i: Int = 0
     lateinit var set: SharedPreferences
     var isMap : Boolean =false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,25 +61,17 @@ class SettingsFragment : Fragment() {
         }
 
 
-        //windSpeed
-        binding.radioMeter.setOnClickListener {
+        //Unites
+        binding.radioStandard.setOnClickListener {
             set.edit().putString("units","standard").apply()
         }
-        binding.radioMile.setOnClickListener {
+        binding.radioImprial.setOnClickListener {
             set.edit().putString("units","imperial").apply()
         }
 
-        //  Tempreature
-        binding.radioCel.setOnClickListener {
+        binding.radioMetric.setOnClickListener {
             set.edit().putString("units","metric").apply()
         }
-        binding.radioKel.setOnClickListener {
-            set.edit().putString("units","standard").apply()
-        }
-        binding.radioFeh.setOnClickListener {
-            set.edit().putString("units","imperial").apply()
-        }
-
         //map
         binding.radioMap.setOnClickListener {
             set.edit().putBoolean("Map",true).apply()
@@ -99,10 +90,7 @@ class SettingsFragment : Fragment() {
         var config = Configuration()
         config.setLocale(locale)
         context?.resources?.updateConfiguration(config,context?.resources?.displayMetrics)
-        var languageSettngs = activity?.getSharedPreferences("language",MODE_PRIVATE)?.edit()?.apply{
-            putString("My Lang",lang)
-            apply()
-        }
+        set.edit().putString("My Lang" , lang).apply()
     }
 
   /* private fun getLocal(){
@@ -113,9 +101,8 @@ class SettingsFragment : Fragment() {
 
 
    fun setDefultSettings(){
-       binding.radioKel.isChecked = true
+      binding.radioStandard.isChecked = true
        binding.radioEnglish.isChecked = true
-       binding.radioMeter.isChecked=true
        if (isMap==true){
            binding.radioMap.isChecked =true
        }else{

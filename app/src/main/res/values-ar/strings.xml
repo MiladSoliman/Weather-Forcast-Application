@@ -15,6 +15,10 @@
     <string name="radio_mile">ميل/ساعة</string>
     <string name="radio_cel">سيلزيوس</string>
     <string name="radio_kel">كيلفين</string>
+    <string name="tv_metric" translatable="false">قياسى(درجة الحرارة بالسلزيوس و سرعة الرياح بمتر/ثانية)</string>
+    <string name="tv_standard" translatable="false">معيارى(درجة الحرارة بالكيلفين و سرعة الرياح بمتر/ثانية)</string>
+    <string name="tv_imprial" translatable="false">امبراطورى(درجة الحرارة بالفهرينهيت و سرعة الرياح بميل/ساعة)</string>
+    <string name="tv_unites" translatable="false">الوحدات</string>
     <string name="radio_fah">فهرينهيت</string>
     <string name="tv_Humidity">الرطوبة</string>
     <string name="tv_Pressure">الضغط</string>

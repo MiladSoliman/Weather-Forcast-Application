@@ -42,7 +42,7 @@ class FavAdapter (private val favWeather: List<MyResponse>, var context: Context
            val yes = context.resources.getString(R.string.delete_accepet)
            val no = context.resources.getString(R.string.delete_refuse)
            val builder = AlertDialog.Builder(context)
-           builder.setMessage(context.resources.getString(R.string.delete_message))                 //("You will lose it from your favourite list")
+           builder.setMessage(context.resources.getString(R.string.delete_message))
            builder.setTitle(context.resources.getString(R.string.delete_title))
            builder.setCancelable(false)
            builder.setPositiveButton(Html.fromHtml("<font color='#dad9d4'>$yes</font>"),

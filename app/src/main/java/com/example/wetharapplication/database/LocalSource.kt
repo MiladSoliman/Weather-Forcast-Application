@@ -10,4 +10,6 @@ interface LocalSource {
 
    suspend fun getSelectedWeather(lat:Double,lon:Double) : Flow<MyResponse>
 
+   suspend fun getSelectedHOMEWeather(latitude:Double ,longitude:Double):Flow<MyResponse>
+
 }

@@ -27,6 +27,7 @@ class IntialDialogFragment : DialogFragment() {
     lateinit var intialFactory: IntialViewModelFactory
     lateinit var intialModel: IntialViewModel
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
