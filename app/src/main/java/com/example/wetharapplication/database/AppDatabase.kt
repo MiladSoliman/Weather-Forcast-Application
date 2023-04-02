@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.example.wetharapplication.model.MyResponse
 
 
-@Database(entities = arrayOf(MyResponse::class) , version = 15)
+@Database(entities = arrayOf(MyResponse::class) , version = 5)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -20,7 +20,7 @@ abstract class AppDatabase : RoomDatabase() {
         fun getInstance (ctx: Context):AppDatabase{
             return INSTANCE?: synchronized(this){
                 val instance  = Room.databaseBuilder(
-                    ctx.applicationContext,AppDatabase::class.java,"Weathers_DataBase16"
+                    ctx.applicationContext,AppDatabase::class.java,"Weathers_DataBase6"
                 ).build()
                 INSTANCE = instance
                 instance

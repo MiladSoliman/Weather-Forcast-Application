@@ -50,14 +50,21 @@ class FavoriteFragment : Fragment() , OnRemove ,OnClick{
 
        favModel.getFavouriteCountries()
 
-       favModel._FavWeathers.observe(viewLifecycleOwner){
-         myFavWeather = it
-         binding.FavRecyclerView.apply {
-             adapter = FavAdapter(myFavWeather,context,this@FavoriteFragment,this@FavoriteFragment)
-             layoutManager = LinearLayoutManager(context)
-         }
-       }
+       favModel._FavWeathers.observe(viewLifecycleOwner) {
+           myFavWeather = it
+           if (!myFavWeather.isEmpty()) {
+               binding.FavRecyclerView.apply {
+                   adapter = FavAdapter(
+                       myFavWeather,
+                       context,
+                       this@FavoriteFragment,
+                       this@FavoriteFragment
+                   )
+                   layoutManager = LinearLayoutManager(context)
+               }
+           }
 
+       }
     }
 
     override fun deleteCountry(response: MyResponse) {

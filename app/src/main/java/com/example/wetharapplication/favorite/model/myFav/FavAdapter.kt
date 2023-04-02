@@ -35,7 +35,7 @@ class FavAdapter (private val favWeather: List<MyResponse>, var context: Context
         val geocoder = Geocoder(context, Locale.getDefault())
         var address:List<Address> = geocoder.getFromLocation(response.lat,response.lon,1) as List<Address>
         var area = address.get(0).adminArea
-        var country = address.get(0).subAdminArea
+      var country = address.get(0).subAdminArea
        holder.binding.tvFavName.text = "$area $country"
 
        holder.binding.deleteImage.setOnClickListener {
