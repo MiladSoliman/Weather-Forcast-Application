@@ -89,6 +89,8 @@ class FavDetailsFragment : Fragment() {
             ).setAction("Action", null)
             snakbar.show()
         }
+
+
         lifecycleScope.launch {
             detilsModel._detailsOfFavWeather.collectLatest { result ->
                 when (result) {

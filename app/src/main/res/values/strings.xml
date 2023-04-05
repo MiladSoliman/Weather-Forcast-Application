@@ -35,4 +35,5 @@
     <string name="delete_refuse" translatable="false">"Cancel"</string>
     <string name="delete_Toast" translatable="false">"Removed From Your Favorite List"</string>
     <string name="snakbar_msg" translatable="false">"This Is The Last Data When You Are Connected To The Internet"</string>
+    <string name="alarm_btn">Save</string>
 </resources>
