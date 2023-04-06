@@ -37,7 +37,6 @@
         android:id="@+id/ToCard"
         android:layout_width="170dp"
         android:layout_height="30dp"
-        android:layout_marginStart="36dp"
         android:backgroundTint="#2a4359"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="@+id/edit_ToCard"
@@ -60,7 +59,7 @@
         android:id="@+id/edit_FromCard"
         android:layout_width="170dp"
         android:layout_height="100dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="224dp"
         android:backgroundTint="#2a4359"
         app:cardCornerRadius="20dp"
@@ -74,7 +73,7 @@
             android:layout_height="42dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
-            android:text="date"
+            android:text="Date"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -85,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="50dp"
-            android:text="time"
+            android:text="Time"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -97,7 +96,7 @@
         android:layout_width="170dp"
         android:layout_height="100dp"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="32dp"
         android:backgroundTint="#2a4359"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +109,7 @@
             android:layout_height="42dp"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
-            android:text="date"
+            android:text="Date"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -121,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="50dp"
-            android:text="time"
+            android:text="Time"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -129,7 +128,7 @@
 
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/notification_radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -138,7 +137,7 @@
         app:layout_constraintTop_toBottomOf="@+id/FromCard">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/notification_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/white"
@@ -148,7 +147,7 @@
             android:textStyle="bold" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/alaram_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:buttonTint="@color/white"
@@ -169,6 +168,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/notification_radioGroup" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

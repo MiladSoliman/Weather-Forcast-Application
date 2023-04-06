@@ -59,7 +59,7 @@ class IntialDialogFragment : DialogFragment() {
                     putString("units", "standard")
                     apply()
                 }
-                dialog?.dismiss()
+                dialog?.cancel()
                 startHomeActivity()
             }else{
                 Toast.makeText(requireContext(),"Please Choose Your Location", Toast.LENGTH_SHORT ).show()
@@ -84,7 +84,7 @@ class IntialDialogFragment : DialogFragment() {
                 putString("units", "metrice")
                 apply()
             }
-            dialog?.dismiss()
+            dialog?.cancel()
             startHomeActivity()
         }
 

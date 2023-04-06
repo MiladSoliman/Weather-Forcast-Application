@@ -24,6 +24,7 @@ class AlertReceiver : BroadcastReceiver() {
     lateinit var response:MyResponse
     override fun onReceive(context: Context?, intent: Intent?) {
 
+        var id = intent?.getIntExtra("id",0)
 
         var repo =
             Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(context!!))
@@ -36,7 +37,7 @@ class AlertReceiver : BroadcastReceiver() {
                 val i = Intent(context, AlertFragment::class.java)
                 intent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)
-                val builder = NotificationCompat.Builder(context, "Easy Weathy")
+                val builder = NotificationCompat.Builder(context, id.toString())
                     .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle(response.timezone)
                     .setContentText(response.current?.temp.toString())
