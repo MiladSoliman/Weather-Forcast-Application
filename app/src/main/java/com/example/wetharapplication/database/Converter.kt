@@ -1,6 +1,7 @@
 package com.example.wetharapplication.database
 
 import androidx.room.TypeConverter
+import com.example.wetharapplication.model.Alerts
 import com.example.wetharapplication.model.Current
 import com.example.wetharapplication.model.Daily
 import com.example.wetharapplication.model.Weather
@@ -23,5 +24,11 @@ class Converters {
     fun listOfWeatherToJson(value: List<Weather> ) =Gson().toJson(value)
     @TypeConverter
     fun JsonToListOfWeather(value: String ) =Gson().fromJson(value,Array<Weather>::class.java).toList()
+
+    @TypeConverter
+    fun listOfAlertsToJson(value: List<Alerts> ) =Gson().toJson(value)
+
+    @TypeConverter
+    fun JsonToListOfAlerts(value: String ) =Gson().fromJson(value,Array<Alerts>::class.java).toList()
 
 }

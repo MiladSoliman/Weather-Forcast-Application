@@ -1,13 +1,48 @@
 package com.example.wetharapplication.alert
 
-import android.app.Application
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.wetharapplication.database.ConcreteLocalSource
-import com.example.wetharapplication.model.Repository
-import com.example.wetharapplication.network.WeatherClient
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.viewModelScope
+import com.example.wetharapplication.model.ApiState
+import com.example.wetharapplication.model.MyResponse
+import com.example.wetharapplication.model.RepositoryInterface
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.launch
 
-class AlertViewModel : ViewModel() {
-  // var repo : Repository = Repository.getInstance(WeatherClient.getInstance(),ConcreteLocalSource.getInstance(req))
+class AlertViewModel (private val  myRepo: RepositoryInterface) : ViewModel() {
+
+    private var alerts : MutableLiveData<List<MyAlert>> = MutableLiveData<List<MyAlert>>()
+    var _alerts : LiveData<List<MyAlert>> = alerts
+
+   init {
+    getAlerts()
+  }
+
+
+    fun insertAlert(myAlert: MyAlert ){
+        viewModelScope.launch {
+          myRepo.insertAlert(myAlert)
+        }
+    }
+
+
+
+    fun getAlerts(){
+        viewModelScope.launch (Dispatchers.IO) {
+            myRepo.getAlerts().collect() {
+                (alerts.postValue(it))
+            }
+        }
+
+    }
+
+    fun deletAlert(myAlert: MyAlert){
+        viewModelScope.launch(Dispatchers.IO) {
+            myRepo.deletAlert(myAlert)
+             getAlerts()
+        }
+    }
 
 }

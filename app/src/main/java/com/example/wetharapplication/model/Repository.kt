@@ -1,5 +1,6 @@
 package com.example.wetharapplication.model
 
+import com.example.wetharapplication.alert.MyAlert
 import com.example.wetharapplication.database.LocalSource
 import com.example.wetharapplication.network.RemoteSource
 import kotlinx.coroutines.flow.Flow
@@ -37,6 +38,17 @@ class Repository private constructor (var remoteSource: RemoteSource , var local
         return localSource.getSelectedWeather(lat,lon)
     }
 
+    override suspend fun insertAlert(myAlert: MyAlert) {
+        localSource.insertAlert(myAlert)
+    }
+
+    override suspend fun deletAlert(myAlert: MyAlert) {
+       localSource.deletAlert(myAlert)
+    }
+
+    override suspend fun getAlerts(): Flow<List<MyAlert>> {
+        return localSource.getAlerts()
+    }
 
 
 }

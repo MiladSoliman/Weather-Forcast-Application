@@ -48,7 +48,7 @@ class FavoriteFragment : Fragment() , OnRemove ,OnClick{
            Navigation.findNavController(view).navigate(R.id.Fav_to_map)
        }
 
-       favModel.getFavouriteCountries()
+      // favModel.getFavouriteCountries()
 
        favModel._FavWeathers.observe(viewLifecycleOwner){
          myFavWeather = it

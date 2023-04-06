@@ -15,8 +15,9 @@ data class MyResponse  (
     val current: Current?,
     val hourly: List<Current>,
     val daily: List<Daily>,
+    val alerts:List<Alerts>
 ) : Serializable{
-    constructor():this(0.0 , 0.0 , null ,0L ,null, listOf() , listOf()  )
+    constructor():this(0.0 , 0.0 , null ,0L ,null, listOf() , listOf() , listOf() )
 }
 
 data class Current (
@@ -35,8 +36,9 @@ data class Current (
     val windDeg: Long,
     val windGust: Double,
     val weather: List<Weather>,
+
 ){
-    constructor():this(0L , 0L , 0L ,0.0 ,0.0, 0L,0L,0.0,0.0,0L,0L,0.0,0L,0.0, listOf() )
+    constructor():this(0L , 0L , 0L ,0.0 ,0.0, 0L,0L,0.0,0.0,0L,0L,0.0,0L,0.0, listOf()  )
 }
 
 
@@ -92,3 +94,12 @@ data class Temp (
     constructor():this(0.0,0.0,0.0,0.0,0.0,0.0)
 
 }
+
+data class Alerts(
+    var senderName: String? = null,
+    var event: String? = null,
+    var start: Int? = null,
+    var end: Int? = null,
+    var description: String? = null,
+    var tags: ArrayList<String> = arrayListOf()
+)

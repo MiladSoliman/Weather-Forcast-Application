@@ -21,14 +21,21 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wetharapplication.R
+import com.example.wetharapplication.database.ConcreteLocalSource
 import com.example.wetharapplication.databinding.FragmentAlertBinding
+import com.example.wetharapplication.home.viewmodel.HomeViewModel
+import com.example.wetharapplication.home.viewmodel.HomeViewModelFactory
+import com.example.wetharapplication.model.Repository
+import com.example.wetharapplication.network.WeatherClient
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 
 
-class AlertFragment : Fragment() {
+class AlertFragment : Fragment() , DeleteAlert {
     lateinit var binding: FragmentAlertBinding
     lateinit var alarmManager: AlarmManager
     lateinit var pendingIntent: PendingIntent
@@ -42,6 +49,10 @@ class AlertFragment : Fragment() {
     lateinit var startTime :String
     lateinit var endTime :String
     lateinit var calenderFromTime : Calendar
+    lateinit var alertModel : AlertViewModel
+    lateinit var alertfactory : AlertViewModelFactory
+    lateinit var myAlertList : List<MyAlert>
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,14 +77,35 @@ class AlertFragment : Fragment() {
             //   activity?.supportFragmentManager?.let { it1 -> alertDailog.show(it1,"Milad") }
             alertDialog()
         }
+
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        alertfactory = AlertViewModelFactory(Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(requireContext())))
+        alertModel = ViewModelProvider(requireActivity(), alertfactory).get(AlertViewModel::class.java)
+
+        alertModel._alerts.observe(viewLifecycleOwner){
+            myAlertList = it
+            binding.alertRecy.apply {
+                adapter = AlertAdapter(myAlertList,this@AlertFragment)
+                layoutManager = LinearLayoutManager(context)
+            }
+
+        }
+
+
+
     }
 
 
     @SuppressLint("WrongConstant")
     private fun createNotificationChannel(id:Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name: CharSequence = "Mina Nageh"
-            val description = "Cloudy Sky"
+            val name: CharSequence = "Weather Application"
+            val description = "Channel For Weather"
             val importance = NotificationManager.IMPORTANCE_MAX
             val channel = NotificationChannel(id.toString(), name, importance)
             channel.description = description
@@ -137,6 +169,7 @@ class AlertFragment : Fragment() {
             createNotificationChannel(id)
             var time = calenderFromTime.timeInMillis
             setAlarm(time,id,myAlert.notifcation)
+            alertModel.insertAlert(myAlert)
             dialog.dismiss()
         }
 
@@ -279,6 +312,10 @@ class AlertFragment : Fragment() {
         val hash = digest.digest(input.toByteArray(StandardCharsets.UTF_8))
         val truncatedHash = hash.copyOfRange(0, 4) // Truncate hash to 4 bytes
         return truncatedHash.fold(0) { acc, byte -> (acc shl 8) + (byte.toInt() and 0xff) }
+    }
+
+    override fun deleteAlert(myAlert: MyAlert) {
+        alertModel.deletAlert(myAlert)
     }
 
 }

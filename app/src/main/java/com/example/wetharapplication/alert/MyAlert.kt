@@ -1,5 +1,8 @@
 package com.example.wetharapplication.alert
 
+import androidx.room.Entity
+
+@Entity(tableName = "Alerts" ,primaryKeys = ["startDay", "startTime"])
 data class MyAlert(
     var startDay:String,
     var endDay:String,

@@ -1,6 +1,7 @@
 package com.example.wetharapplication.database
 
 import android.content.Context
+import com.example.wetharapplication.alert.MyAlert
 import com.example.wetharapplication.model.MyResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -41,6 +42,18 @@ class ConcreteLocalSource private constructor(context: Context) : LocalSource {
 
     override suspend fun getSelectedWeather(lat: Double, lon: Double): Flow<MyResponse> {
         return dao.getSelectedWeather(lat,lon)
+    }
+
+    override suspend fun insertAlert(myAlert: MyAlert) {
+        dao.insertAlert(myAlert)
+    }
+
+    override suspend fun deletAlert(myAlert: MyAlert) {
+       dao.deletAlert(myAlert)
+    }
+
+    override suspend fun getAlerts(): Flow<List<MyAlert>> {
+       return dao.getAlerts()
     }
 
 

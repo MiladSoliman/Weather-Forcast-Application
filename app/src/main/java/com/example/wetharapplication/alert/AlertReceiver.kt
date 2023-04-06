@@ -40,13 +40,18 @@ class AlertReceiver : BroadcastReceiver() {
                 val builder = NotificationCompat.Builder(context, id.toString())
                     .setSmallIcon(R.drawable.app_icon)
                     .setContentTitle(response.timezone)
-                    .setContentText(response.current?.temp.toString())
+                   // .setContentText(response.alerts.get(0).description)
                     .setAutoCancel(true)
                     .setDefaults(NotificationCompat.DEFAULT_ALL)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .setContentIntent(pendingIntent)
-                val notificationManger = NotificationManagerCompat.from(context)
 
+                val notificationManger = NotificationManagerCompat.from(context)
+                     if (response.alerts.size!=0&&!response.alerts.isEmpty()){
+                         builder.setContentText(response.alerts.get(0).description)
+                     }else{
+                         builder.setContentText("The Weather Is Good Today , Enjoy with it ")
+                     }
                 if (ActivityCompat.checkSelfPermission(
                         context,
                         Manifest.permission.POST_NOTIFICATIONS
@@ -58,7 +63,10 @@ class AlertReceiver : BroadcastReceiver() {
                 notificationManger.notify(123, builder.build())
             }
 
+
         }
+
+
 
 
 
