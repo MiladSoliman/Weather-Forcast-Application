@@ -50,10 +50,6 @@ class AlertFragment : Fragment() , DeleteAlert {
     lateinit var editFromTime: TextView
     lateinit var editFromDate: TextView
     var myAlert: MyAlert = MyAlert("", "", "", "", "", 0)
-    lateinit var startDay :String
-    lateinit var endDay :String
-    lateinit var startTime :String
-    lateinit var endTime :String
     lateinit var calenderFromTime : Calendar
     lateinit var alertModel : AlertViewModel
     lateinit var alertfactory : AlertViewModelFactory
@@ -61,6 +57,15 @@ class AlertFragment : Fragment() , DeleteAlert {
     private var lat: Double = 0.0
     private var long: Double = 0.0
     lateinit var se: SharedPreferences
+    var startDay = 0
+    var endDay = 0
+    var startMonth=0
+    var endMonth=0
+    var startHour=0
+    var endHour=0
+    var startMinute=0
+    var endMiunute=0
+
 
 
 
@@ -130,13 +135,23 @@ class AlertFragment : Fragment() , DeleteAlert {
     private fun setAlarm(time:Long , id:Int , type:String) {
         alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), AlertReceiver::class.java)
-        intent.putExtra("id",id)
-        intent.putExtra("notification",type)
-        intent.putExtra("lat",lat)
-        intent.putExtra("long",long)
+        intent.putExtra("notification", type)
+        intent.putExtra("lat", lat)
+        intent.putExtra("long", long)
+      /*  intent.putExtra("id", id )
         pendingIntent = PendingIntent.getBroadcast(requireContext(), id, intent, 0)
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent)*/
+
+        var days = (endDay - startDay) + ((endMonth - startMonth) * 30)
+        Log.i("days", "" + days)
+        var interval = 24 * 60 * 60 * 1000
+        for (i in 0..days) {
+            intent.putExtra("id", id+i )
+            pendingIntent = PendingIntent.getBroadcast(requireContext(), id + i, intent, 0)
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, time + (i * interval), pendingIntent)
+        }
     }
+
 
 
     fun alertDialog() {
@@ -187,13 +202,12 @@ class AlertFragment : Fragment() , DeleteAlert {
                     requestOverAppPermission()
                 }
             }
-            var id =generateUniqueIntValue(startDay,endDay,startTime)
+            var id =generateUniqueIntValue(myAlert.startDay,myAlert.endDay,myAlert.startTime)
             createNotificationChannel(id)
             var time = calenderFromTime.timeInMillis
             setAlarm(time,id,myAlert.notifcation)
             alertModel.insertAlert(myAlert)
-            Log.i("type",myAlert.notifcation)
-            Log.i("idA",id.toString())
+            Log.i("milad",myAlert.notifcation)
             dialog.dismiss()
         }
 
@@ -203,7 +217,6 @@ class AlertFragment : Fragment() , DeleteAlert {
         val day = SimpleDateFormat("dd").format(calenderDate?.time)
         val month = SimpleDateFormat("MMM").format(calenderDate?.time)
         val year = SimpleDateFormat("YYYY").format(calenderDate?.time)
-        endDay = "$day/$month/$year"
         myAlert.endDay = "$day/$month/$year"
         editToDate.text = "$day/$month/$year"
 
@@ -213,7 +226,6 @@ class AlertFragment : Fragment() , DeleteAlert {
     private fun updateToTime(calenderTime: Calendar?) {
         val format = SimpleDateFormat("hh:mm aa")
         val time = format.format(calenderTime?.time)
-        endTime = "$time"
         myAlert.endTime = "$time"
         editToTime.text = "$time"
     }
@@ -222,7 +234,6 @@ class AlertFragment : Fragment() , DeleteAlert {
     private fun updateFromTime(calenderTime: Calendar?) {
         val format = SimpleDateFormat("hh:mm aa")
         val time = format.format(calenderTime?.time)
-        startTime = "$time"
         myAlert.startTime = "$time"
         editFromTime.text = "$time"
 
@@ -232,7 +243,6 @@ class AlertFragment : Fragment() , DeleteAlert {
         val day = SimpleDateFormat("dd").format(calenderDate?.time)
         val month = SimpleDateFormat("MMM").format(calenderDate?.time)
         val year = SimpleDateFormat("YYYY").format(calenderDate?.time)
-        startDay = "$day/$month/$year"
         myAlert.startDay = "$day/$month/$year"
         editFromDate.text = "$day/$month/$year"
 
@@ -244,6 +254,10 @@ class AlertFragment : Fragment() , DeleteAlert {
             calenderFromTime .set(Calendar.HOUR_OF_DAY, hourOfDay)
             calenderFromTime .set(Calendar.MINUTE, minute)
             calenderFromTime .timeZone = TimeZone.getDefault()
+
+            startHour = hourOfDay
+            startMinute=minute
+
             updateFromTime(calenderFromTime )
         }
         val timePickerDialog = TimePickerDialog(
@@ -261,8 +275,11 @@ class AlertFragment : Fragment() , DeleteAlert {
         val datePicker = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
 
             calenderDate.set(Calendar.YEAR, year)
-            calenderDate.set(Calendar.MONTH, month)
+           calenderDate.set(Calendar.MONTH, month)
             calenderDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+            startDay=dayOfMonth
+            startMonth=month
 
             // val calenderTime = Calendar.getInstance()
             updateFromDateText(calenderDate)
@@ -288,6 +305,10 @@ class AlertFragment : Fragment() , DeleteAlert {
             calenderTime.set(Calendar.HOUR_OF_DAY, hourOfDay)
             calenderTime.set(Calendar.MINUTE, minute)
             calenderTime.timeZone = TimeZone.getDefault()
+
+            endHour=hourOfDay
+            endMiunute = minute
+
             updateToTime(calenderTime)
         }
         val timePickerDialog = TimePickerDialog(
@@ -310,6 +331,9 @@ class AlertFragment : Fragment() , DeleteAlert {
             calenderDate.set(Calendar.YEAR, year)
             calenderDate.set(Calendar.MONTH, month)
             calenderDate.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+            endDay=dayOfMonth
+            endMonth=month
 
             // val calenderTime = Calendar.getInstance()
             updateToDateText(calenderDate)
@@ -341,6 +365,30 @@ class AlertFragment : Fragment() , DeleteAlert {
     override fun deleteAlert(myAlert: MyAlert) {
         alertModel.deletAlert(myAlert)
     }
+
+
+
+
+  /*  private fun deleteCompletedNotification(data: MyUserAlert, i: Long,trigerTime:Long) {
+        var hoursDelay=data.timeTo-data.timeFrom
+        Log.i("time","$hoursDelay")
+        var finalTrigger=hoursDelay+trigerTime
+        val delteIntent  = Intent(requireActivity(), DeleteAlarmReciever::class.java)
+        delteIntent.putExtra("alert",data.id+i.toInt())
+        val deletePending = getBroadcast(requireContext(), data.id+i.toInt(), delteIntent, PendingIntent.FLAG_MUTABLE)
+        Log.i("time","${data.id+i.toInt()}   id in fragment")
+        alarmManager!!.setExact(AlarmManager.RTC_WAKEUP, finalTrigger, deletePending);
+    }*/
+
+
+
+
+   /* override fun onReceive(context: Context?, intent: Intent?) {
+        val alertId=intent?.getIntExtra("alert",0)
+        Log.i("time","$alertId  id in reciver")
+        val notificationManager = NotificationManagerCompat.from(context!!)
+        notificationManager.cancel(alertId!!)
+    }*/
 
 
 

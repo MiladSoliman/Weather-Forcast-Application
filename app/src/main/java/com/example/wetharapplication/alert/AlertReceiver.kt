@@ -51,14 +51,17 @@ class AlertReceiver : BroadcastReceiver() {
             repo.getDataFromApi(lat!!, long!!, "metric", "en")
                 .collect {
                     response = it
+                    Log.i("type",notificationType!!)
                     if (response.alerts.size != 0 && !response.alerts.isEmpty()) {
                         description = response.alerts.get(0).description.toString()
                     } else {
                         description = "The Weather Is Good Today , Enjoy with it "
                     }
+
                     if( notificationType  == "alarm"){
                         setAlarm(context,description)
                     }else {
+                        Log.i("noti","inNotification")
                         val i = Intent(context, AlertFragment::class.java)
                         intent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)

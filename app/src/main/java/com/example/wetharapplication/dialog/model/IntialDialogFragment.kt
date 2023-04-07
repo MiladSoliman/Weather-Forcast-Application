@@ -37,6 +37,7 @@ class IntialDialogFragment : DialogFragment() {
             Constraints.LayoutParams.MATCH_PARENT,
             Constraints.LayoutParams.WRAP_CONTENT
         )*/
+
     }
 
     override fun onCreateView(
@@ -107,6 +108,7 @@ class IntialDialogFragment : DialogFragment() {
     override fun onStart() {
         super.onStart()
        dialog?.setCanceledOnTouchOutside(false)
+        dialog?.window!!.setBackgroundDrawableResource(android.R.color.transparent)
       /*  dialog!!.window?.setLayout(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
