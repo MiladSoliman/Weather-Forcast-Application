@@ -1,14 +1,12 @@
-package com.example.wetharapplication.alert
+package com.example.wetharapplication.alert.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wetharapplication.model.ApiState
-import com.example.wetharapplication.model.MyResponse
+import com.example.wetharapplication.alert.model.MyAlert
 import com.example.wetharapplication.model.RepositoryInterface
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class AlertViewModel (private val  myRepo: RepositoryInterface) : ViewModel() {
@@ -21,7 +19,7 @@ class AlertViewModel (private val  myRepo: RepositoryInterface) : ViewModel() {
   }
 
 
-    fun insertAlert(myAlert: MyAlert ){
+    fun insertAlert(myAlert: MyAlert){
         viewModelScope.launch {
           myRepo.insertAlert(myAlert)
         }

@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/alertFragment"
-        android:name="com.example.wetharapplication.alert.AlertFragment"
+        android:name="com.example.wetharapplication.alert.model.AlertFragment"
         android:label="fragment_alert"
         tools:layout="@layout/fragment_alert" />
     <fragment

@@ -1,4 +1,4 @@
-package com.example.wetharapplication.alert
+package com.example.wetharapplication.alert.model
 
 import android.Manifest
 import android.app.PendingIntent
@@ -58,6 +58,7 @@ class AlertReceiver : BroadcastReceiver() {
                         description = "The Weather Is Good Today , Enjoy with it "
                     }
 
+
                     if( notificationType  == "alarm"){
                         setAlarm(context,description)
                     }else {
@@ -98,6 +99,7 @@ class AlertReceiver : BroadcastReceiver() {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         else
             WindowManager.LayoutParams.TYPE_PHONE
+
 
         val mp = MediaPlayer.create(context, Settings.System.DEFAULT_ALARM_ALERT_URI)
 

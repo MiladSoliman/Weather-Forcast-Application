@@ -1,4 +1,4 @@
-package com.example.wetharapplication.alert
+package com.example.wetharapplication.alert.model
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -20,22 +20,22 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.TextView
-import androidx.annotation.RequiresApi
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.wetharapplication.R
+import com.example.wetharapplication.alert.*
+import com.example.wetharapplication.alert.viewmodel.AlertViewModel
+import com.example.wetharapplication.alert.viewmodel.AlertViewModelFactory
 import com.example.wetharapplication.database.ConcreteLocalSource
 import com.example.wetharapplication.databinding.FragmentAlertBinding
-import com.example.wetharapplication.home.viewmodel.HomeViewModel
-import com.example.wetharapplication.home.viewmodel.HomeViewModelFactory
+import com.example.wetharapplication.model.Current
 import com.example.wetharapplication.model.Repository
 import com.example.wetharapplication.network.WeatherClient
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
@@ -75,6 +75,7 @@ class AlertFragment : Fragment() , DeleteAlert {
         lat = se.getFloat("lat", 31.0F)!!.toDouble()
         long = se.getFloat("long",31.0F)!!.toDouble()
 
+
     }
 
     override fun onCreateView(
@@ -88,11 +89,10 @@ class AlertFragment : Fragment() , DeleteAlert {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var alertDailog = AlertDailog()
-
 
         binding.alertFAB.setOnClickListener {
             alertDialog()
+
         }
 
     }
@@ -108,10 +108,18 @@ class AlertFragment : Fragment() , DeleteAlert {
 
         alertModel._alerts.observe(viewLifecycleOwner){
             myAlertList = it
+
+            if (it.size ==0 || it.isEmpty()){
+                binding.alrtLottie.visibility = View.VISIBLE
+                binding.alrtLottie.animate()
+            }else{
+                binding.alrtLottie.visibility = View.GONE
+            }
             binding.alertRecy.apply {
-                adapter = AlertAdapter(myAlertList,this@AlertFragment)
+                adapter = AlertAdapter(myAlertList,requireContext(),this@AlertFragment)
                 layoutManager = LinearLayoutManager(context)
             }
+
 
         }
 
@@ -195,20 +203,29 @@ class AlertFragment : Fragment() , DeleteAlert {
         }
 
 
-
         dialog.findViewById<Button>(R.id.alarmset).setOnClickListener {
-            if (myAlert.notifcation=="alarm"){
-                if (!Settings.canDrawOverlays(requireContext())){
-                    requestOverAppPermission()
+            if (myAlert.startDay.equals("") || myAlert.endDay.equals("")||myAlert.endTime.equals("")||myAlert.startTime.equals("") || myAlert.notifcation.equals("")){
+                Toast.makeText(requireContext(),"This Vields Must Be Not Empty",Toast.LENGTH_SHORT).show()
+            } else if (endDay < startDay || endHour < startHour || endMonth < startMonth || endMiunute < startMinute || calenderFromTime.timeInMillis < Calendar.getInstance().timeInMillis){
+                Toast.makeText(requireContext(),"Please Choose Valid Date ",Toast.LENGTH_SHORT).show()
+            }else{
+                if (myAlert.notifcation=="alarm"){
+                    if (!Settings.canDrawOverlays(requireContext())){
+                        requestOverAppPermission()
+                    }
                 }
+                var id =generateUniqueIntValue(myAlert.startDay,myAlert.endDay,myAlert.startTime)
+                myAlert.alartId = id
+                createNotificationChannel(id)
+                var time = calenderFromTime.timeInMillis
+                setAlarm(time,id,myAlert.notifcation)
+                alertModel.insertAlert(myAlert)
+                Log.i("milad",myAlert.notifcation)
+                dialog.dismiss()
+
             }
-            var id =generateUniqueIntValue(myAlert.startDay,myAlert.endDay,myAlert.startTime)
-            createNotificationChannel(id)
-            var time = calenderFromTime.timeInMillis
-            setAlarm(time,id,myAlert.notifcation)
-            alertModel.insertAlert(myAlert)
-            Log.i("milad",myAlert.notifcation)
-            dialog.dismiss()
+
+
         }
 
     }
@@ -364,6 +381,17 @@ class AlertFragment : Fragment() , DeleteAlert {
 
     override fun deleteAlert(myAlert: MyAlert) {
         alertModel.deletAlert(myAlert)
+        cancleNotification(myAlert.alartId)
+    }
+
+    private fun cancleNotification(id:Int) {
+        alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(activity, AlertReceiver::class.java)
+        var days = (endDay - startDay) + ((endMonth - startMonth) * 30)
+        for (i in 0..days) {
+            pendingIntent = getBroadcast(context, id+i, intent, 0)
+            alarmManager.cancel(pendingIntent)
+        }
     }
 
 

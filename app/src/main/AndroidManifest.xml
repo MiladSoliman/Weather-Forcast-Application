@@ -52,7 +52,7 @@
 
         </activity>
 
-        <receiver android:name=".alert.AlertReceiver"/>
+        <receiver android:name=".alert.model.AlertReceiver"/>
     </application>
 
 </manifest>

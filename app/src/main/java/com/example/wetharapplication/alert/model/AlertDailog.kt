@@ -1,16 +1,13 @@
-package com.example.wetharapplication.alert
+package com.example.wetharapplication.alert.model
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.icu.util.Calendar
 import android.icu.util.TimeZone
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import com.example.wetharapplication.R
 import com.example.wetharapplication.databinding.FragmentAlertDailogBinding

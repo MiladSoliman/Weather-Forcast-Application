@@ -46,12 +46,14 @@ class MapsFragment : Fragment() {
         searchOnMap()
         map = googleMap
         googleMap.setOnMapClickListener { location ->
+            map.clear()
             googleMap.addMarker(MarkerOptions().position(location))
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
             lat = location.latitude
             lon = location.latitude
             binding.FabSaveFavLocation.visibility = View.VISIBLE
         }
+
 
     }
 

@@ -24,8 +24,10 @@ class SettingsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
        //  getLocal()
+
         set = activity?.getSharedPreferences("My Shared",MODE_PRIVATE)!!
         isMap = set?.getBoolean("Map",false) !!
+
     }
 
 
@@ -59,8 +61,6 @@ class SettingsFragment : Fragment() {
             setLocale("en")
             activity?.recreate()
         }
-
-
         //Unites
         binding.radioStandard.setOnClickListener {
             set.edit().putString("units","standard").apply()
@@ -78,8 +78,9 @@ class SettingsFragment : Fragment() {
             Navigation.findNavController(requireView()).navigate(R.id.settingstomap)
         }
 
-
-
+        binding.radioGps.setOnClickListener {
+            Log.i("GPS","ana hna")
+        }
 
     }
 
@@ -105,7 +106,7 @@ class SettingsFragment : Fragment() {
        binding.radioEnglish.isChecked = true
        if (isMap==true){
            binding.radioMap.isChecked =true
-       }else{
+       }else if (isMap==false){
            binding.radioGps.isChecked = true
        }
    }

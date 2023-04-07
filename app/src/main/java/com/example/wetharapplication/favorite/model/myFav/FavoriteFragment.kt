@@ -52,6 +52,14 @@ class FavoriteFragment : Fragment() , OnRemove ,OnClick{
 
        favModel._FavWeathers.observe(viewLifecycleOwner){
          myFavWeather = it
+
+           if (it.size==0){
+               binding.favLottie.visibility = View.VISIBLE
+               binding.favLottie.animate()
+           }else{
+               binding.favLottie.visibility = View.GONE
+           }
+
          binding.FavRecyclerView.apply {
              adapter = FavAdapter(myFavWeather,context,this@FavoriteFragment,this@FavoriteFragment)
              layoutManager = LinearLayoutManager(context)

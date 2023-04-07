@@ -3,6 +3,8 @@ package com.example.wetharapplication.home.model
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -28,6 +30,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.*
 
 class HomeFragment : Fragment() {
     lateinit var homeFactory: HomeViewModelFactory
@@ -66,7 +69,8 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         isMap = se?.getBoolean("Map", false)!!
-        var context: Context = requireContext()
+
+      var context: Context = requireContext()
         super.onResume()
         if (isMap) {
             val action = HomeFragmentDirections.homtMap("home")
@@ -77,6 +81,7 @@ class HomeFragment : Fragment() {
             language = se?.getString("language", "en")!!
             unites = se?.getString("units", "standard")!!
             homeFactory = HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(context)))
+
             homeModel = ViewModelProvider(requireActivity(), homeFactory).get(HomeViewModel::class.java)
 
         //check internet
@@ -142,7 +147,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun setData(){
-        binding.tvCity.text = response.timezone
+        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+        var addressList:List<Address> = geocoder.getFromLocation(response.lat,response.lon,1) as List<Address>
+        if (addressList.size != 0){
+            var area = addressList.get(0).countryName
+            var country = addressList.get(0).adminArea
+            binding.tvCity.text = country +" , "+ area
+        }else{
+            binding.tvCity.text = "Welcome Home"
+        }
         binding.tvDescription.text = response.current?.weather?.get(0)?.description
         var myCurrentDate = MyUtil().convertDataAndTime(response.current?.dt)
         binding.tvDate.text = myCurrentDate

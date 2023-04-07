@@ -1,8 +1,7 @@
-package com.example.wetharapplication.alert
+package com.example.wetharapplication.alert.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.wetharapplication.home.viewmodel.HomeViewModel
 import com.example.wetharapplication.model.RepositoryInterface
 
 class AlertViewModelFactory (private val myrepo: RepositoryInterface) : ViewModelProvider.Factory{

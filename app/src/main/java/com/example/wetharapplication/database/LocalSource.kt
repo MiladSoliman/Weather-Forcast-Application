@@ -1,6 +1,6 @@
 package com.example.wetharapplication.database
 
-import com.example.wetharapplication.alert.MyAlert
+import com.example.wetharapplication.alert.model.MyAlert
 import com.example.wetharapplication.model.MyResponse
 import kotlinx.coroutines.flow.Flow
 

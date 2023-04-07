@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bakground4"
-    tools:context=".alert.AlertDailog">
+    tools:context=".alert.model.AlertDailog">
 
 
     <androidx.cardview.widget.CardView

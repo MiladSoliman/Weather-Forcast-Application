@@ -41,6 +41,8 @@
     <string name="choose_location">اختار موقعك الان </string>
     <string name="enable_radio">تفعيل</string>
     <string name="disable_radio">تعطيل</string>
+    <string name="empty_date" translatable="false">"يجب ان تملء هذة الخانات"</string>
+    <string name="valid_date" translatable="false">"من فضلك اختر تواريخ مناسبة"</string>
 
 
 

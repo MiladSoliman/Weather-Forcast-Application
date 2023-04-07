@@ -1,4 +1,4 @@
-package com.example.wetharapplication.alert
+package com.example.wetharapplication.alert.model
 
 import androidx.room.Entity
 
