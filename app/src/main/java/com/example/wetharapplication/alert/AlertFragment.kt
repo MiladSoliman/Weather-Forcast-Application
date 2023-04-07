@@ -3,21 +3,26 @@ package com.example.wetharapplication.alert
 import android.annotation.SuppressLint
 import android.app.*
 import android.app.PendingIntent.getBroadcast
+import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.icu.util.Calendar
 import android.icu.util.TimeZone
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.Fragment
@@ -30,6 +35,7 @@ import com.example.wetharapplication.home.viewmodel.HomeViewModel
 import com.example.wetharapplication.home.viewmodel.HomeViewModelFactory
 import com.example.wetharapplication.model.Repository
 import com.example.wetharapplication.network.WeatherClient
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
@@ -52,11 +58,18 @@ class AlertFragment : Fragment() , DeleteAlert {
     lateinit var alertModel : AlertViewModel
     lateinit var alertfactory : AlertViewModelFactory
     lateinit var myAlertList : List<MyAlert>
+    private var lat: Double = 0.0
+    private var long: Double = 0.0
+    lateinit var se: SharedPreferences
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        se = activity?.getSharedPreferences("My Shared", Context.MODE_PRIVATE)!!
+        lat = se.getFloat("lat", 31.0F)!!.toDouble()
+        long = se.getFloat("long",31.0F)!!.toDouble()
+
     }
 
     override fun onCreateView(
@@ -74,12 +87,13 @@ class AlertFragment : Fragment() , DeleteAlert {
 
 
         binding.alertFAB.setOnClickListener {
-            //   activity?.supportFragmentManager?.let { it1 -> alertDailog.show(it1,"Milad") }
             alertDialog()
         }
 
+    }
 
-
+    private fun requestOverAppPermission() {
+        startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION),20)
     }
 
     override fun onResume() {
@@ -95,8 +109,6 @@ class AlertFragment : Fragment() , DeleteAlert {
             }
 
         }
-
-
 
     }
 
@@ -120,6 +132,8 @@ class AlertFragment : Fragment() , DeleteAlert {
         val intent = Intent(requireContext(), AlertReceiver::class.java)
         intent.putExtra("id",id)
         intent.putExtra("notification",type)
+        intent.putExtra("lat",lat)
+        intent.putExtra("long",long)
         pendingIntent = PendingIntent.getBroadcast(requireContext(), id, intent, 0)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent)
     }
@@ -132,7 +146,7 @@ class AlertFragment : Fragment() , DeleteAlert {
         val window: Window? = dialog.getWindow()
         //  window?.setBackgroundDrawableResource(R.color.transparent);
         window?.setLayout(
-            Constraints.LayoutParams.WRAP_CONTENT,
+            Constraints.LayoutParams.MATCH_PARENT,
             Constraints.LayoutParams.WRAP_CONTENT
         )
         //window?.setBackgroundDrawableResource(R.color.transparent);
@@ -153,6 +167,9 @@ class AlertFragment : Fragment() , DeleteAlert {
         editFromDate = dialog.findViewById<TextView>(R.id.edit_date)
         editToTime = dialog.findViewById<TextView>(R.id.edit_to_time)
         editToDate = dialog.findViewById<TextView>(R.id.edit_to_date)
+        dialog.findViewById<ImageView>(R.id.btn_cancel).setOnClickListener{
+            dialog.dismiss()
+        }
 
 
         dialog.findViewById<RadioButton>(R.id.notification_radio).setOnClickListener {
@@ -165,11 +182,18 @@ class AlertFragment : Fragment() , DeleteAlert {
 
 
         dialog.findViewById<Button>(R.id.alarmset).setOnClickListener {
+            if (myAlert.notifcation=="alarm"){
+                if (!Settings.canDrawOverlays(requireContext())){
+                    requestOverAppPermission()
+                }
+            }
             var id =generateUniqueIntValue(startDay,endDay,startTime)
             createNotificationChannel(id)
             var time = calenderFromTime.timeInMillis
             setAlarm(time,id,myAlert.notifcation)
             alertModel.insertAlert(myAlert)
+            Log.i("type",myAlert.notifcation)
+            Log.i("idA",id.toString())
             dialog.dismiss()
         }
 
@@ -317,5 +341,9 @@ class AlertFragment : Fragment() , DeleteAlert {
     override fun deleteAlert(myAlert: MyAlert) {
         alertModel.deletAlert(myAlert)
     }
+
+
+
+
 
 }

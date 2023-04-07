@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout3"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bakground4"
     tools:context=".alert.AlertDailog">
@@ -11,9 +11,9 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/FromCard"
-        android:layout_width="170dp"
+        android:layout_width="160dp"
         android:layout_height="30dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="50dp"
         android:backgroundTint="#2a4359"
         app:cardCornerRadius="20dp"
@@ -35,7 +35,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/ToCard"
-        android:layout_width="170dp"
+        android:layout_width="160dp"
         android:layout_height="30dp"
         android:backgroundTint="#2a4359"
         app:cardCornerRadius="20dp"
@@ -57,20 +57,23 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/edit_FromCard"
-        android:layout_width="170dp"
+        android:layout_width="160dp"
         android:layout_height="100dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="224dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="50dp"
         android:backgroundTint="#2a4359"
         app:cardCornerRadius="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/FromCard"
         app:layout_constraintEnd_toStartOf="@+id/edit_ToCard"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/btn_cancel">
 
         <TextView
             android:id="@+id/edit_time"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
             android:text="Date"
@@ -82,7 +85,7 @@
             android:id="@+id/edit_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="50dp"
             android:text="Time"
             android:textColor="@color/white"
@@ -93,9 +96,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/edit_ToCard"
-        android:layout_width="170dp"
+        android:layout_width="160dp"
         android:layout_height="100dp"
-        android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="#2a4359"
         app:cardCornerRadius="20dp"
@@ -105,8 +107,8 @@
 
         <TextView
             android:id="@+id/edit_to_time"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginTop="10dp"
             android:text="Date"
@@ -118,7 +120,7 @@
             android:id="@+id/edit_to_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="50dp"
             android:text="Time"
             android:textColor="@color/white"
@@ -161,13 +163,23 @@
         android:id="@+id/alarmset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="33dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="#898f9b"
         android:text="@string/alarm_btn"
+        app:cornerRadius="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/notification_radioGroup" />
+
+    <ImageView
+        android:id="@+id/btn_cancel"
+        android:layout_width="45dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/baseline_close_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

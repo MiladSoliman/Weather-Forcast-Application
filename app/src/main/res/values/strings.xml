@@ -36,4 +36,9 @@
     <string name="delete_Toast" translatable="false">"Removed From Your Favorite List"</string>
     <string name="snakbar_msg" translatable="false">"This Is The Last Data When You Are Connected To The Internet"</string>
     <string name="alarm_btn">Save</string>
+    <string name="alarm_dismiss">Dismiss</string>
+    <string name="choose_location">Choose Your Location</string>
+    <string name="enable_radio">Enable</string>
+    <string name="disable_radio">Disable</string>
+
 </resources>

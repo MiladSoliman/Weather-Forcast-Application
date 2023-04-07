@@ -72,8 +72,8 @@ class HomeFragment : Fragment() {
             val action = HomeFragmentDirections.homtMap("home")
             Navigation.findNavController(requireView()).navigate(action)
         }
-            lat = se?.getFloat("lat", 17f)?.toDouble()!!
-            long = se?.getFloat("long", 7f)?.toDouble()!!
+            lat = se?.getFloat("lat", 31.0f)?.toDouble()!!
+            long = se?.getFloat("long", 31.0f)?.toDouble()!!
             language = se?.getString("language", "en")!!
             unites = se?.getString("units", "standard")!!
             homeFactory = HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(context)))

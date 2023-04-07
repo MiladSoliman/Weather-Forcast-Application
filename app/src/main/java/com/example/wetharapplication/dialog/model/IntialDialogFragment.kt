@@ -9,7 +9,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
+import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.wetharapplication.MainActivity
@@ -29,6 +31,12 @@ class IntialDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+      //  val window: Window? = dialog?.getWindow()
+        //  window?.setBackgroundDrawableResource(R.color.transparent);
+      /*  window?.setLayout(
+            Constraints.LayoutParams.MATCH_PARENT,
+            Constraints.LayoutParams.WRAP_CONTENT
+        )*/
     }
 
     override fun onCreateView(
@@ -61,9 +69,11 @@ class IntialDialogFragment : DialogFragment() {
                 }
                 dialog?.cancel()
                 startHomeActivity()
-            }else{
-                Toast.makeText(requireContext(),"Please Choose Your Location", Toast.LENGTH_SHORT ).show()
+            } else {
+                Toast.makeText(requireContext(), "Please Choose Your Location", Toast.LENGTH_SHORT)
+                    .show()
             }
+
         }
 
 
@@ -97,10 +107,10 @@ class IntialDialogFragment : DialogFragment() {
     override fun onStart() {
         super.onStart()
        dialog?.setCanceledOnTouchOutside(false)
-        dialog!!.window?.setLayout(
+      /*  dialog!!.window?.setLayout(
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
-        )
+        )*/
     }
 
 

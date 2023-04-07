@@ -36,7 +36,11 @@
     <string name="delete_refuse" translatable="false">"الغاء"</string>
     <string name="delete_Toast" translatable="false">"تم ازالتها من قائمتك المفضلة"</string>
     <string name="snakbar_msg" translatable="false">"هذة اخر معلومات محفوظة عندما كنت متصل بالانترنت"</string>
-
+    <string name="alarm_btn">حفظ</string>
+    <string name="alarm_dismiss">تجاهل</string>
+    <string name="choose_location">اختار موقعك الان </string>
+    <string name="enable_radio">تفعيل</string>
+    <string name="disable_radio">تعطيل</string>
 
 
 
