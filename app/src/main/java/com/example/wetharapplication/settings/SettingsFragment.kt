@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.example.wetharapplication.R
 import com.example.wetharapplication.databinding.FragmentSettingsBinding
+import com.example.wetharapplication.model.Location
 import org.intellij.lang.annotations.Language
 import java.util.*
 
@@ -42,8 +43,6 @@ class SettingsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
-
     }
 
 
@@ -79,7 +78,18 @@ class SettingsFragment : Fragment() {
         }
 
         binding.radioGps.setOnClickListener {
+            var loc = Location(requireContext())
             Log.i("GPS","ana hna")
+            loc.getLastLocation()
+            loc._myLocation.observe(viewLifecycleOwner) {
+                set.edit().apply {
+                    putFloat("lat",it[0].toFloat())
+                    putFloat("long",it[1].toFloat())
+                    apply()
+                }
+                Log.i("GPSlat",""+it[0].toFloat())
+                Log.i("GPSlong",""+it[1].toFloat())
+            }
         }
 
     }
@@ -104,11 +114,12 @@ class SettingsFragment : Fragment() {
    fun setDefultSettings(){
       binding.radioStandard.isChecked = true
        binding.radioEnglish.isChecked = true
-       if (isMap==true){
+      /* if (isMap==true){
            binding.radioMap.isChecked =true
-       }else if (isMap==false){
+       }else {
+           Log.i("hi","if from gps")
            binding.radioGps.isChecked = true
-       }
+       }*/
    }
 
 }
