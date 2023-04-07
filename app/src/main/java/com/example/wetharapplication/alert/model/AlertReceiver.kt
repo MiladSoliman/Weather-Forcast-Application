@@ -42,6 +42,7 @@ class AlertReceiver : BroadcastReceiver() {
         var notificationType  =intent?.getStringExtra("notification")
         var lat = intent?.getDoubleExtra("lat",31.0)
         var long = intent?.getDoubleExtra("long",31.0)
+        var isEnabled = context?.getSharedPreferences("My Shared", Context.MODE_PRIVATE)?.getBoolean("isEnabled",true)
 
         var repo =
             Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(context!!))
@@ -51,44 +52,45 @@ class AlertReceiver : BroadcastReceiver() {
             repo.getDataFromApi(lat!!, long!!, "metric", "en")
                 .collect {
                     response = it
-                    Log.i("type",notificationType!!)
-                    if (response.alerts.size != 0 && !response.alerts.isEmpty()) {
+
+                    if (response.alerts.size != 0 && !response.alerts.isNullOrEmpty()) {
                         description = response.alerts.get(0).description.toString()
                     } else {
                         description = "The Weather Is Good Today , Enjoy with it "
                     }
+                    if (isEnabled == true) {
+                        if (notificationType == "alarm") {
+                            setAlarm(context, description)
+                        } else {
+                            Log.i("noti", "inNotification")
+                            val i = Intent(context, AlertFragment::class.java)
+                            intent!!.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)
+                            val builder = NotificationCompat.Builder(context, id.toString())
+                                .setSmallIcon(R.drawable.baseline_access_alarm_24)
+                                .setContentTitle(response.timezone)
+                                .setAutoCancel(true)
+                                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                                .setPriority(NotificationCompat.PRIORITY_MAX)
+                                .setContentIntent(pendingIntent)
+                                .setContentText(description)
+                                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                            val notificationManger = NotificationManagerCompat.from(context)
+
+                            if (ActivityCompat.checkSelfPermission(
+                                    context,
+                                    Manifest.permission.POST_NOTIFICATIONS
+                                ) != PackageManager.PERMISSION_GRANTED
+                            ) {
 
 
-                    if( notificationType  == "alarm"){
-                        setAlarm(context,description)
-                    }else {
-                        Log.i("noti","inNotification")
-                        val i = Intent(context, AlertFragment::class.java)
-                        intent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)
-                        val builder = NotificationCompat.Builder(context, id.toString())
-                            .setSmallIcon(R.drawable.baseline_access_alarm_24)
-                            .setContentTitle(response.timezone)
-                            .setAutoCancel(true)
-                            .setDefaults(NotificationCompat.DEFAULT_ALL)
-                            .setPriority(NotificationCompat.PRIORITY_MAX)
-                            .setContentIntent(pendingIntent)
-                            .setContentText(description)
-                            .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
-                        val notificationManger = NotificationManagerCompat.from(context)
-
-                        if (ActivityCompat.checkSelfPermission(
-                                context,
-                                Manifest.permission.POST_NOTIFICATIONS
-                            ) != PackageManager.PERMISSION_GRANTED
-                        ) {
-
+                            }
+                            notificationManger.notify(123, builder.build())
 
                         }
-                        notificationManger.notify(123, builder.build())
-
                     }
-                    }
+                }
 
 
                 }

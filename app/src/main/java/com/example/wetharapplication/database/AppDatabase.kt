@@ -9,7 +9,7 @@ import com.example.wetharapplication.alert.model.MyAlert
 import com.example.wetharapplication.model.MyResponse
 
 
-@Database(entities = arrayOf(MyResponse::class , MyAlert::class) , version = 16)
+@Database(entities = arrayOf(MyResponse::class , MyAlert::class) , version = 17)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -21,7 +21,7 @@ abstract class AppDatabase : RoomDatabase() {
         fun getInstance (ctx: Context):AppDatabase{
             return INSTANCE?: synchronized(this){
                 val instance  = Room.databaseBuilder(
-                    ctx.applicationContext,AppDatabase::class.java,"Weathers_DataBase17"
+                    ctx.applicationContext,AppDatabase::class.java,"Weathers_DataBase18"
                 ).build()
                 INSTANCE = instance
                 instance

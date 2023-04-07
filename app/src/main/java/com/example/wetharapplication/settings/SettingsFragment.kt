@@ -76,7 +76,7 @@ class SettingsFragment : Fragment() {
             set.edit().putBoolean("Map",true).apply()
             Navigation.findNavController(requireView()).navigate(R.id.settingstomap)
         }
-
+        //Location
         binding.radioGps.setOnClickListener {
             var loc = Location(requireContext())
             Log.i("GPS","ana hna")
@@ -89,6 +89,20 @@ class SettingsFragment : Fragment() {
                 }
                 Log.i("GPSlat",""+it[0].toFloat())
                 Log.i("GPSlong",""+it[1].toFloat())
+            }
+        }
+
+        binding.radioEnable.setOnClickListener {
+            set.edit().apply {
+                putBoolean("isEnabled",true)
+                apply()
+            }
+        }
+
+        binding.radioDisable.setOnClickListener {
+            set.edit().apply(){
+                putBoolean("isEnabled",false)
+                apply()
             }
         }
 
@@ -114,6 +128,8 @@ class SettingsFragment : Fragment() {
    fun setDefultSettings(){
       binding.radioStandard.isChecked = true
        binding.radioEnglish.isChecked = true
+       binding.radioEnable.isChecked = true
+
       /* if (isMap==true){
            binding.radioMap.isChecked =true
        }else {

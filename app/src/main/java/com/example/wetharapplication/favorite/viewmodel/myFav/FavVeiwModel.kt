@@ -27,7 +27,7 @@ class FavVeiwModel (private var myRepo: RepositoryInterface) : ViewModel(){
     fun insertWeather(lat:Double , long: Double ){
        viewModelScope.launch {
          // myRepo.insertCountry(myRepo.getDataFromApi(lat,long,"metric","ar").collect)
-          myRepo.getDataFromApi(lat,long,"metric","ar").catch { e->ApiState.Failure(e) }
+          myRepo.getDataFromApi(lat,long,"standard","en").catch { e->ApiState.Failure(e) }
               .collect{
                   myRepo.insertCountry(it)
               }

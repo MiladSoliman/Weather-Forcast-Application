@@ -42,5 +42,6 @@
     <string name="disable_radio">Disable</string>
     <string name="empty_date" translatable="false">"This Fields Must Be Not Empty"</string>
     <string name="valid_date" translatable="false">"Please Choose Valid Date"</string>
+    <string name="tv_notification">Notification</string>
 
 </resources>

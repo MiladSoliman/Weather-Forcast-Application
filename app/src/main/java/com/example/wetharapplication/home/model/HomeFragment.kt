@@ -68,10 +68,10 @@ class HomeFragment : Fragment() {
     }
 
     override fun onResume() {
+        super.onResume()
         isMap = se?.getBoolean("Map", false)!!
 
       var context: Context = requireContext()
-        super.onResume()
         if (isMap) {
             val action = HomeFragmentDirections.homtMap("home")
             Navigation.findNavController(requireView()).navigate(action)

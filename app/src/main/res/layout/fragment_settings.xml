@@ -36,7 +36,7 @@
         android:id="@+id/cardView3"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:backgroundTint="#2a4359"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
@@ -142,7 +142,7 @@
         android:id="@+id/cardView6"
         android:layout_width="150dp"
         android:layout_height="30dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="32dp"
         android:backgroundTint="#2a4359"
         app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="@+id/cardView5"
@@ -209,6 +209,72 @@
                 android:textStyle="bold"></RadioButton>
 
         </RadioGroup>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardNotification"
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#2a4359"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/cardView6"
+        app:layout_constraintStart_toStartOf="@+id/cardView6"
+        app:layout_constraintTop_toBottomOf="@+id/cardView4">
+
+
+        <TextView
+            android:id="@+id/tv_Notification"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="@string/tv_notification"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewNotification"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#2a4359"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/cardNotification"
+        app:layout_constraintStart_toStartOf="@+id/cardNotification"
+        app:layout_constraintTop_toBottomOf="@+id/cardNotification">
+
+        <RadioGroup
+            android:id="@+id/notification_radiogroup"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RadioButton
+                android:id="@+id/radio_enable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:buttonTint="@color/white"
+                android:text="@string/enable_radio"
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
+
+            <RadioButton
+                android:id="@+id/radio_disable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:buttonTint="@color/white"
+                android:text="@string/disable_radio"
+                android:textColor="@color/white"
+                android:textStyle="bold"></RadioButton>
+
+        </RadioGroup>
+
 
     </androidx.cardview.widget.CardView>
 

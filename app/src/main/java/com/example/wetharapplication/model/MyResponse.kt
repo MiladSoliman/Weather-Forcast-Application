@@ -15,7 +15,7 @@ data class MyResponse  (
     val current: Current?,
     val hourly: List<Current>,
     val daily: List<Daily>,
-    val alerts:List<Alerts>
+    val alerts:List<Alerts>,
 ) : Serializable{
     constructor():this(0.0 , 0.0 , null ,0L ,null, listOf() , listOf() , listOf() )
 }
@@ -103,3 +103,19 @@ data class Alerts(
     var description: String? = null,
     var tags: ArrayList<String> = arrayListOf()
 )
+
+
+/*@Entity(tableName = "Home" , primaryKeys = ["lat", "lon"])
+data class HomeWeather  (
+    val lat: Double,
+    val lon: Double,
+    val timezone: String?,
+    val timezoneOffset: Long,
+    @Embedded
+    val current: Current?,
+    val hourly: List<Current>,
+    val daily: List<Daily>,
+    val weather: List<Weather>,
+) {
+    constructor():this(0.0 , 0.0 , null ,0L ,null, listOf() , listOf() , listOf() )
+}*/

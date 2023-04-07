@@ -15,7 +15,7 @@
 
         <TextView
             android:id="@+id/tv_FavName"
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="15dp"
@@ -48,12 +48,14 @@
             android:id="@+id/delete_image"
             android:layout_width="55dp"
             android:layout_height="33dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="32dp"
             android:layout_marginBottom="7dp"
             android:drawableTint="@android:color/holo_red_light"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_FavName"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/baseline_delete_24" />
     </androidx.constraintlayout.widget.ConstraintLayout>

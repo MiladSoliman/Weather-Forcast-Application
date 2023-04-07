@@ -51,6 +51,7 @@ class FavoriteFragment : Fragment() , OnRemove ,OnClick{
       // favModel.getFavouriteCountries()
 
        favModel._FavWeathers.observe(viewLifecycleOwner){
+
          myFavWeather = it
 
            if (it.size==0){

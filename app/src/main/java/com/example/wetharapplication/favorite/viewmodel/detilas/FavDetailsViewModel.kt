@@ -42,7 +42,7 @@ class FavDetailsViewModel (private var myRepo: RepositoryInterface) : ViewModel(
 
     fun UpdateWeather(lat:Double,long:Double ){
         viewModelScope.launch  {
-            myRepo.getDataFromApi(lat,long,"metric","ar").catch { e->ApiState.Failure(e) }
+            myRepo.getDataFromApi(lat,long,"standard","en").catch { e->ApiState.Failure(e) }
                 .collect{
                     myRepo.insertCountry(it)
                 }
