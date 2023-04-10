@@ -15,6 +15,7 @@ import java.util.*
 class FavHourlyAdapter (private val hoursWeather: List<Current>, var context: Context) : RecyclerView.Adapter<FavHourlyAdapter.ViewHolder>() {
 
     lateinit var binding: FavHourlyViewBinding
+    var myUtil = MyUtil()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater: LayoutInflater = parent.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -24,12 +25,11 @@ class FavHourlyAdapter (private val hoursWeather: List<Current>, var context: Co
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var currentHour = hoursWeather.get(position)
-        var formatedData = MyUtil().convertToHour(currentHour.dt)
+        var formatedData = myUtil.convertToHour(currentHour.dt)
         holder.binding.tvFavoriteHour.text = formatedData
         var temp = String.format("%.0f",currentHour.temp)
         holder.binding.tvFavoriteHourDegree.text = temp
-        Glide.with(context).load("https://openweathermap.org/img/wn/${currentHour.weather.get(0).icon}@2x.png").into(binding.favoriteHourImagView)
-
+        binding.favoriteHourImagView.setImageResource(myUtil.cheangeIcon(currentHour.weather.get(0).icon))
     }
 
     override fun getItemCount(): Int {

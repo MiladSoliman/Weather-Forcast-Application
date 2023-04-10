@@ -25,6 +25,7 @@ import com.example.wetharapplication.R
 import com.example.wetharapplication.database.ConcreteLocalSource
 import com.example.wetharapplication.model.MyResponse
 import com.example.wetharapplication.model.Repository
+import com.example.wetharapplication.network.InternetCheck
 import com.example.wetharapplication.network.WeatherClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,27 +39,30 @@ class AlertReceiver : BroadcastReceiver() {
     lateinit var description: String
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        var id = intent?.getIntExtra("id",0)
-        var notificationType  =intent?.getStringExtra("notification")
-        var lat = intent?.getDoubleExtra("lat",31.0)
-        var long = intent?.getDoubleExtra("long",31.0)
-        var isEnabled = context?.getSharedPreferences("My Shared", Context.MODE_PRIVATE)?.getBoolean("isEnabled",true)
+        var id = intent?.getIntExtra("id", 0)
+        var notificationType = intent?.getStringExtra("notification")
+        var lat = intent?.getDoubleExtra("lat", 31.0)
+        var long = intent?.getDoubleExtra("long", 31.0)
+        var isEnabled = context?.getSharedPreferences("My Shared", Context.MODE_PRIVATE)
+            ?.getBoolean("isEnabled", true)
 
         var repo =
-            Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(context!!))
+            Repository.getInstance(
+                WeatherClient.getInstance(),
+                ConcreteLocalSource.getInstance(context!!)
+            )
+        if(isEnabled==true){
+           if (InternetCheck.getConnectivity(context) == true) {
+               CoroutineScope(Dispatchers.IO).launch {
+                repo.getDataFromApi(lat!!, long!!, "metric", "en")
+                    .collect {
+                        response = it
 
-
-        CoroutineScope(Dispatchers.IO).launch {
-            repo.getDataFromApi(lat!!, long!!, "metric", "en")
-                .collect {
-                    response = it
-
-                    if (response.alerts.size != 0 && !response.alerts.isNullOrEmpty()) {
-                        description = response.alerts.get(0).description.toString()
-                    } else {
-                        description = "The Weather Is Good Today , Enjoy with it "
-                    }
-                    if (isEnabled == true) {
+                        if (response.alerts.size != 0 && !response.alerts.isNullOrEmpty()) {
+                            description = response.alerts.get(0).description.toString()
+                        } else {
+                            description = "The Weather Is Good Today , Enjoy with it "
+                        }
                         if (notificationType == "alarm") {
                             setAlarm(context, description)
                         } else {
@@ -89,12 +93,49 @@ class AlertReceiver : BroadcastReceiver() {
                             notificationManger.notify(123, builder.build())
 
                         }
+
                     }
-                }
 
 
-                }
+            }
+        } else {
+            val i = Intent(context, AlertFragment::class.java)
+            intent!!.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            val pendingIntent = PendingIntent.getActivity(context, 0, i, 0)
+            val builder = NotificationCompat.Builder(context, id.toString())
+                .setSmallIcon(R.drawable.baseline_access_alarm_24)
+                .setContentTitle("Wethio Application")
+                .setAutoCancel(true)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setContentIntent(pendingIntent)
+                .setContentText(context.resources.getString(R.string.no_internet))
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+            val notificationManger = NotificationManagerCompat.from(context)
+
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+
+
+            }
+            notificationManger.notify(123, builder.build())
+
+        }
+        }
+        var deletedId=intent?.getIntExtra("id",0)
+        if (id!=0){
+            CoroutineScope(Dispatchers.IO).launch{
+                repo.deletAlert(MyAlert("satrdDay","endDay","startTime","endTime","",deletedId!!))
+            }
+        }
     }
+
+
+
 
     private suspend fun setAlarm(context: Context , description : String) {
         LAYOUT_FLAG = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -134,4 +175,6 @@ class AlertReceiver : BroadcastReceiver() {
          }
 
     }
+
+
 }

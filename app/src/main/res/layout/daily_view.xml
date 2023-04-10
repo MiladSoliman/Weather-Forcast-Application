@@ -38,6 +38,7 @@
             android:id="@+id/tv_day_desc"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="TextView"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/dayily_imageView"

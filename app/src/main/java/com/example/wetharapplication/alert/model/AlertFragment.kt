@@ -22,6 +22,7 @@ import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.Constraints
 import androidx.fragment.app.Fragment
@@ -71,6 +72,8 @@ class AlertFragment : Fragment() , DeleteAlert {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.alertFragement)
         se = activity?.getSharedPreferences("My Shared", Context.MODE_PRIVATE)!!
         lat = se.getFloat("lat", 31.0F)!!.toDouble()
         long = se.getFloat("long",31.0F)!!.toDouble()
@@ -146,14 +149,13 @@ class AlertFragment : Fragment() , DeleteAlert {
         intent.putExtra("notification", type)
         intent.putExtra("lat", lat)
         intent.putExtra("long", long)
-      /*  intent.putExtra("id", id )
-        pendingIntent = PendingIntent.getBroadcast(requireContext(), id, intent, 0)
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent)*/
-
         var days = (endDay - startDay) + ((endMonth - startMonth) * 30)
         Log.i("days", "" + days)
         var interval = 24 * 60 * 60 * 1000
         for (i in 0..days) {
+            if(i==days){
+                intent.putExtra("deleted_id",id)
+            }
             intent.putExtra("id", id+i )
             pendingIntent = PendingIntent.getBroadcast(requireContext(), id + i, intent, 0)
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, time + (i * interval), pendingIntent)
@@ -206,7 +208,7 @@ class AlertFragment : Fragment() , DeleteAlert {
         dialog.findViewById<Button>(R.id.alarmset).setOnClickListener {
             if (myAlert.startDay.equals("") || myAlert.endDay.equals("")||myAlert.endTime.equals("")||myAlert.startTime.equals("") || myAlert.notifcation.equals("")){
                 Toast.makeText(requireContext(),"This Vields Must Be Not Empty",Toast.LENGTH_SHORT).show()
-            } else if (endDay < startDay || endHour < startHour || endMonth < startMonth || endMiunute < startMinute || calenderFromTime.timeInMillis < Calendar.getInstance().timeInMillis){
+            } else if (endDay < startDay || endHour < startHour || endMonth < startMonth  || calenderFromTime.timeInMillis < Calendar.getInstance().timeInMillis){
                 Toast.makeText(requireContext(),"Please Choose Valid Date ",Toast.LENGTH_SHORT).show()
             }else{
                 if (myAlert.notifcation=="alarm"){

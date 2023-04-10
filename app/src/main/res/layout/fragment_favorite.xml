@@ -23,11 +23,11 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/Fav_Recycler_View"
-        android:layout_width="364dp"
-        android:layout_height="632dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="401dp"
+        android:layout_height="633dp"
+        android:layout_marginStart="6dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="6dp"
         app:layout_constraintBottom_toTopOf="@+id/fav_FAB"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.521"

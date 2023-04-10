@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +18,9 @@ import com.example.wetharapplication.favorite.viewmodel.myFav.FavVeiwModel
 import com.example.wetharapplication.favorite.viewmodel.myFav.FavViewModelFactory
 import com.example.wetharapplication.model.MyResponse
 import com.example.wetharapplication.model.Repository
+import com.example.wetharapplication.network.InternetCheck
 import com.example.wetharapplication.network.WeatherClient
+import com.google.android.material.snackbar.Snackbar
 
 
 class FavoriteFragment : Fragment() , OnRemove ,OnClick{
@@ -39,16 +42,28 @@ class FavoriteFragment : Fragment() , OnRemove ,OnClick{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.favouriteFragment)
         var context:Context = requireContext()
         favFactory =
             FavViewModelFactory (Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(context)) )
         favModel =
             ViewModelProvider(requireActivity(),  favFactory).get(FavVeiwModel::class.java)
        binding.favFAB.setOnClickListener {
-           Navigation.findNavController(view).navigate(R.id.Fav_to_map)
+           if (InternetCheck.getConnectivity(context)==true){
+               Navigation.findNavController(view).navigate(R.id.Fav_to_map)
+           }else{
+               val snakbar = Snackbar.make(
+                   view,
+                   context.resources.getString(R.string.no_internet),
+                   Snackbar.LENGTH_LONG
+               ).setAction("Action", null)
+               snakbar.show()
+           }
+
        }
 
-      // favModel.getFavouriteCountries()
+       favModel.getFavouriteCountries()
 
        favModel._FavWeathers.observe(viewLifecycleOwner){
 

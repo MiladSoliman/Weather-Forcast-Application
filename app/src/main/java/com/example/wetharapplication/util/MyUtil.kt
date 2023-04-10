@@ -1,5 +1,7 @@
 package com.example.wetharapplication.util
 
+
+import com.example.wetharapplication.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -69,5 +71,35 @@ class MyUtil {
         sdf.timeZone=TimeZone.getDefault()
         var formatedData=sdf.format(date)
         return formatedData
+
+    }
+
+
+    fun cheangeIcon(icon:String?):Int{
+        var myImage:Int=-1
+         when(icon){
+             "01d" -> {myImage = R.drawable.d01}
+             "02d"-> {myImage =  R.drawable.d02}
+             "03d"-> {myImage =  R.drawable.d03}
+             "04d"-> {myImage =  R.drawable.d04}
+             "09d"-> {myImage =  R.drawable.d09}
+             "10d"-> {myImage =  R.drawable.d10}
+             "11d"-> {myImage =  R.drawable.d11}
+             "13d"-> {myImage =  R.drawable.d13}
+             "50d"-> {myImage =  R.drawable.d50}
+             "01n"-> {myImage =  R.drawable.n01}
+             "02n"-> {myImage =  R.drawable.n02}
+             "03n"-> {myImage =  R.drawable.n03}
+             "04n"-> {myImage =  R.drawable.n04}
+             "09n"-> {myImage =  R.drawable.n09}
+             "10n"-> {myImage =  R.drawable.n10}
+             "11n"-> {myImage =  R.drawable.n11}
+             "13n"-> {myImage =  R.drawable.n13}
+             "50n"-> {myImage =  R.drawable.n50}
+         }
+
+  return myImage
+
     }
  }
+

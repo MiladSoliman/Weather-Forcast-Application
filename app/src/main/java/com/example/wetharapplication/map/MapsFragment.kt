@@ -6,6 +6,7 @@ import android.location.Geocoder
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.os.RemoteException
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ import com.example.wetharapplication.database.ConcreteLocalSource
 import com.example.wetharapplication.favorite.viewmodel.myFav.FavVeiwModel
 import com.example.wetharapplication.favorite.viewmodel.myFav.FavViewModelFactory
 import com.example.wetharapplication.model.Repository
+import com.example.wetharapplication.network.InternetCheck
 import com.example.wetharapplication.network.WeatherClient
 import java.util.*
 
@@ -117,33 +119,66 @@ class MapsFragment : Fragment() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
 
-
+        if (InternetCheck.getConnectivity(requireContext()) == true) {
         binding.FabSaveFavLocation.setOnClickListener {
-           if (args.from.equals("home")){
+            if (args.from.equals("home")) {
                 activity?.getSharedPreferences("My Shared", Context.MODE_PRIVATE)?.edit()
-                   ?.apply {
-                       putBoolean("Map",false)
-                       putFloat("lat",lat.toFloat())
-                       putFloat("long",lon.toFloat())
-                       apply()
-                       Log.i("my location",""+lat + lon )
-                   }
-               Navigation.findNavController(view).navigate(R.id.From_Map_To_Home)
-           }else{
-               favFactory =
-                   FavViewModelFactory (Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(requireContext())) )
-               favModel =
-                   ViewModelProvider(requireActivity(),  favFactory).get(FavVeiwModel::class.java)
-               Log.i("fav","" +lat+lon)
-               val geocoder = Geocoder(requireContext(), Locale.getDefault())
-               var addressList:List<Address> = geocoder.getFromLocation(lat,lon,1) as List<Address>
-               if (addressList.size!=0 && !addressList.isEmpty() ) {
-                   favModel.insertWeather(lat, lon,)
-                   Navigation.findNavController(view).navigate(R.id.FromMapToFav)
-               }else{
-                   Toast.makeText(requireContext(),"Please Choose Valid Location",Toast.LENGTH_SHORT).show()
-               }
-           }
+                    ?.apply {
+                        putBoolean("Map", false)
+                        putFloat("lat", lat.toFloat())
+                        putFloat("long", lon.toFloat())
+                        apply()
+                        Log.i("my location", "" + lat + lon)
+                    }
+                Navigation.findNavController(view).navigate(R.id.From_Map_To_Home)
+            } else {
+                favFactory =
+                    FavViewModelFactory(
+                        Repository.getInstance(
+                            WeatherClient.getInstance(),
+                            ConcreteLocalSource.getInstance(requireContext())
+                        )
+                    )
+                favModel =
+                    ViewModelProvider(requireActivity(), favFactory).get(FavVeiwModel::class.java)
+                Log.i("fav", "" + lat + lon)
+                try {
+                    val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                    var addressList: List<Address> =
+                        geocoder.getFromLocation(lat, lon, 1) as List<Address>
+                    if (addressList.size != 0 && !addressList.isEmpty()) {
+                        favModel.insertWeather(lat, lon,)
+                        Navigation.findNavController(view).navigate(R.id.FromMapToFav)
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Please Choose Valid Location",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                } catch (e: IOException) {
+                    Toast.makeText(
+                        requireContext(),
+                        "There is an error , please try again later ",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } catch (e: RemoteException) {
+                    Toast.makeText(
+                        requireContext(),
+                        "There is an error , please try again later ",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
+        }
+    }else{
+            Toast.makeText(
+                requireContext(),
+                requireContext().resources.getText(R.string.no_internet),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
 

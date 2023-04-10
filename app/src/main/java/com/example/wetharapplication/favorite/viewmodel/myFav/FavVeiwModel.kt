@@ -20,9 +20,9 @@ class FavVeiwModel (private var myRepo: RepositoryInterface) : ViewModel(){
     var _FavWeathers : LiveData<List<MyResponse>> = FavWeathers
 
 
-    init {
+   /* init {
         getFavouriteCountries()
-    }
+    }*/
 
     fun insertWeather(lat:Double , long: Double ){
        viewModelScope.launch {

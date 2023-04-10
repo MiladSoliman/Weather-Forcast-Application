@@ -80,8 +80,8 @@
 
             <ImageView
                 android:id="@+id/home_image"
-                android:layout_width="115dp"
-                android:layout_height="103dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
@@ -95,6 +95,7 @@
                 android:id="@+id/tv_homedegree"
                 android:layout_width="210dp"
                 android:layout_height="84dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="27ْ C"

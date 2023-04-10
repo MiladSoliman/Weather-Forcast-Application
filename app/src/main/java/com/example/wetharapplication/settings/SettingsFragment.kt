@@ -10,10 +10,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation
 import com.example.wetharapplication.R
 import com.example.wetharapplication.databinding.FragmentSettingsBinding
 import com.example.wetharapplication.model.Location
+import com.example.wetharapplication.network.InternetCheck
+import com.google.android.material.snackbar.Snackbar
 import org.intellij.lang.annotations.Language
 import java.util.*
 
@@ -24,6 +27,8 @@ class SettingsFragment : Fragment() {
     var isMap : Boolean =false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.settingsFragement)
        //  getLocal()
 
         set = activity?.getSharedPreferences("My Shared",MODE_PRIVATE)!!
@@ -48,33 +53,65 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var context = requireContext()
         setDefultSettings()
         //langauge
-        binding.radioArabic.setOnClickListener {
-            set.edit().putString("language","ar").apply()
-            setLocale("ar")
-            activity?.recreate()
-        }
-        binding.radioEnglish.setOnClickListener {
-            set.edit().putString("language","en").apply()
-            setLocale("en")
-            activity?.recreate()
-        }
+      if(InternetCheck.getConnectivity(context)==true){
+          binding.radioArabic.setOnClickListener {
+              set.edit().putString("language", "ar").apply()
+              setLocale("ar")
+              activity?.recreate()
+          }
+          binding.radioEnglish.setOnClickListener {
+              set.edit().putString("language", "en").apply()
+              setLocale("en")
+              activity?.recreate()
+          }
+      }else{
+          val snakbar = Snackbar.make(
+              view,
+              context.resources.getString(R.string.no_internet),
+              Snackbar.LENGTH_LONG
+          ).setAction("Action", null)
+          snakbar.show()
+      }
+
+
+
         //Unites
-        binding.radioStandard.setOnClickListener {
-            set.edit().putString("units","standard").apply()
-        }
+        if (InternetCheck.getConnectivity(context) == true){
+            binding.radioStandard.setOnClickListener {
+                set.edit().putString("units", "standard").apply()
+            }
         binding.radioImprial.setOnClickListener {
-            set.edit().putString("units","imperial").apply()
+            set.edit().putString("units", "imperial").apply()
         }
 
         binding.radioMetric.setOnClickListener {
-            set.edit().putString("units","metric").apply()
+            set.edit().putString("units", "metric").apply()
+        }
+    }else{
+            val snakbar = Snackbar.make(
+                view,
+                context.resources.getString(R.string.no_internet),
+                Snackbar.LENGTH_LONG
+            ).setAction("Action", null)
+            snakbar.show()
         }
         //map
         binding.radioMap.setOnClickListener {
-            set.edit().putBoolean("Map",true).apply()
-            Navigation.findNavController(requireView()).navigate(R.id.settingstomap)
+            if(InternetCheck.getConnectivity(context)==true){
+                set.edit().putBoolean("Map",true).apply()
+                Navigation.findNavController(requireView()).navigate(R.id.settingstomap)
+            }else{
+                val snakbar = Snackbar.make(
+                    view,
+                    context.resources.getString(R.string.no_internet),
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null)
+                snakbar.show()
+            }
+
         }
         //Location
         binding.radioGps.setOnClickListener {
@@ -118,24 +155,12 @@ class SettingsFragment : Fragment() {
         set.edit().putString("My Lang" , lang).apply()
     }
 
-  /* private fun getLocal(){
-        var languageSettngs =  activity?.getSharedPreferences("language",MODE_PRIVATE)
-        var language = languageSettngs?.getString("language","en")
-        setLocale(language)
-    }*/
-
 
    fun setDefultSettings(){
       binding.radioStandard.isChecked = true
        binding.radioEnglish.isChecked = true
        binding.radioEnable.isChecked = true
 
-      /* if (isMap==true){
-           binding.radioMap.isChecked =true
-       }else {
-           Log.i("hi","if from gps")
-           binding.radioGps.isChecked = true
-       }*/
    }
 
 }

@@ -3,13 +3,17 @@ package com.example.wetharapplication.favorite.model.details
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
+import android.os.RemoteException
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -34,7 +38,9 @@ import com.example.wetharapplication.util.MyUtil
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.io.IOException
 import java.text.SimpleDateFormat
+import java.util.*
 
 class FavDetailsFragment : Fragment() {
     lateinit var binding: FragmentFavDetailsBinding
@@ -49,8 +55,11 @@ class FavDetailsFragment : Fragment() {
     lateinit var favlanguage: String
     lateinit var favunites: String
     lateinit var response: MyResponse
+    var myUtil = MyUtil()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.favouriteFragment)
         latitude = args.lat.toDouble()
         longitude = args.lon.toDouble()
     }
@@ -146,12 +155,26 @@ class FavDetailsFragment : Fragment() {
     }
 
     private fun setData(){
-        binding.tvFavCity.text = response.timezone
+        try{
+            val geocoder = Geocoder(requireContext(), Locale.getDefault())
+            var addressList:List<Address> = geocoder.getFromLocation(response.lat,response.lon,1) as List<Address>
+            if (addressList.size != 0){
+                var area = addressList.get(0).countryName
+                var country = addressList.get(0).adminArea
+                binding.tvFavCity.text = country +" , "+ area
+            }else{
+                binding.tvFavCity.text = "Welcome Home"
+            }
+        }catch (e : IOException){
+            binding.tvFavCity.text = response.timezone
+        }catch (e:RemoteException){
+            binding.tvFavCity.text = response.timezone
+        }
         binding.tvFavDescription.text = response.current?.weather?.get(0)?.description
-        var myCurrentDate = MyUtil().convertDataAndTime(response.current?.dt)
+        var myCurrentDate = myUtil.convertDataAndTime(response.current?.dt)
         binding.tvFavDate.text = myCurrentDate
         var temp = String.format("%.0f", response.current?.temp)
-        var char = MyUtil().getDegreeUnit(favunites,favlanguage)
+        var char = myUtil.getDegreeUnit(favunites,favlanguage)
         binding.tvFavHomedegree.text = temp + char
         binding.tvFavEditHumidity.text = response.current?.humidity.toString()+ " " + "%"
         binding.tvFavEditCloud.text = response.current?.clouds.toString()
@@ -159,12 +182,9 @@ class FavDetailsFragment : Fragment() {
         binding.tvFavEditPressur.text =
             response.current?.pressure.toString() + " " + "hpa"
         binding.tvFavEditUv.text = response.current?.uvi.toString()
-        var wChar = MyUtil().getWindSpeedUnit(favunites,favlanguage)
+        var wChar = myUtil.getWindSpeedUnit(favunites,favlanguage)
         binding.tvFavEditWindspeed.text = response.current?.windSpeed.toString()+wChar
-        Glide.with(requireContext())
-            .load("https://openweathermap.org/img/wn/${response.current?.weather?.get(0)?.icon}@2x.png")
-            .into(binding.favImage)
-        Log.i("dayicon", "" + response.current?.weather?.get(0)?.icon)
+        binding.favImage.setImageResource(myUtil.cheangeIcon(response.current?.weather?.get(0)?.icon))
         hoursList = response.hourly
         Log.i("Ehab", response.hourly.toString())
         binding.favHourlyRecyclerview.apply {

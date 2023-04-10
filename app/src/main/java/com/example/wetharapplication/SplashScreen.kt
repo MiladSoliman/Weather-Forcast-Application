@@ -1,5 +1,6 @@
 package com.example.wetharapplication
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
@@ -19,22 +20,24 @@ class SplashScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
-       /* set =  this.getSharedPreferences("My Shared",MODE_PRIVATE)
-        var language = set.getString("My Lang","en")
-         setLocale(language)*/
+       var set = getSharedPreferences("My Shared", MODE_PRIVATE)
+       var isFirst = set.getBoolean("isFirstTime",false)
+
+
         var dialog = IntialDialogFragment()
 
      binding.welcomeSplash.animate().setDuration(10000).setStartDelay(1500);
 
         Handler().postDelayed({
             binding.welcomeSplash.visibility = View.GONE
-            dialog.show(supportFragmentManager , "Milad")
+            if (isFirst==false) {
+                dialog.show(supportFragmentManager, "Milad")
+            } else{
+                var intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }, 4500)
-
-
-
-
-
 
 
     }

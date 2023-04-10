@@ -3,6 +3,10 @@
     <string name="app_name">Wethar Application</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="homeFragment">"الرئيسية"</string>
+    <string name="favouriteFragment">المفضلة</string>
+    <string name="settingsFragement">الاعدادات</string>
+    <string name="alertFragement">التنبيهات</string>
     <string name="tv_location">الموقع</string>
     <string name="tv_language">اللغة</string>
     <string name="tv_windSpeed">سرعة الرياح</string>
@@ -44,7 +48,8 @@
     <string name="empty_date" translatable="false">"يجب ان تملء هذة الخانات"</string>
     <string name="valid_date" translatable="false">"من فضلك اختر تواريخ مناسبة"</string>
     <string name="tv_notification">الاشعارات</string>
-
+    <string name="no_internet">"انت غير متصل بالانترنت , تأكد من اتصالك بالانترنت"</string>
+    <string name="plz_choose_location">من فضلك اختار موقعك الاول </string>
 
 
 </resources>

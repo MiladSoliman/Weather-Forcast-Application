@@ -20,7 +20,7 @@ import com.example.wetharapplication.databinding.FragmentIntialDialogBinding
 import com.example.wetharapplication.dialog.viewmodel.IntialViewModel
 import com.example.wetharapplication.dialog.viewmodel.IntialViewModelFactory
 import com.example.wetharapplication.model.Location
-
+import com.example.wetharapplication.network.InternetCheck
 
 
 class IntialDialogFragment : DialogFragment() {
@@ -31,13 +31,6 @@ class IntialDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-      //  val window: Window? = dialog?.getWindow()
-        //  window?.setBackgroundDrawableResource(R.color.transparent);
-      /*  window?.setLayout(
-            Constraints.LayoutParams.MATCH_PARENT,
-            Constraints.LayoutParams.WRAP_CONTENT
-        )*/
-
     }
 
     override fun onCreateView(
@@ -57,30 +50,44 @@ class IntialDialogFragment : DialogFragment() {
         intialModel =
             ViewModelProvider(requireActivity(), intialFactory).get(IntialViewModel::class.java)
 
+
         binding.startSave.setOnClickListener {
+            if (InternetCheck.getConnectivity(context) == true) {
             var selectedItem = binding.IntialradioGroup.checkedRadioButtonId
             if (selectedItem == R.id.radio_gps) {
                 intialModel.getMyLocation()
+                activity?.getSharedPreferences("My Shared", MODE_PRIVATE)?.edit()?.apply() {
+                    putBoolean("isFirstTime", true)
+                   apply()
+                }
             } else if (selectedItem == R.id.radio_map) {
                 activity?.getSharedPreferences("My Shared", MODE_PRIVATE)?.edit()?.apply() {
                     putBoolean("Map", true)
                     putString("language", "en")
                     putString("units", "standard")
+                    putBoolean("isFirstTime", true)
                     apply()
                 }
                 dialog?.cancel()
                 startHomeActivity()
             } else {
-                Toast.makeText(requireContext(), "Please Choose Your Location", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireContext(), context.resources.getString(R.string.plz_choose_location), Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+        }else{
+                Toast.makeText(
+                    requireContext(), context.resources.getString(R.string.no_internet), Toast.LENGTH_SHORT)
                     .show()
             }
 
         }
 
 
-        intialModel.observLocation().observe(viewLifecycleOwner){
-            if (it[0]!=0.0 && it[1]!=0.0){
-                saveInSharedPrefernce(it[0],it[1])
+        intialModel.observLocation().observe(viewLifecycleOwner) {
+            if (it[0] != 0.0 && it[1] != 0.0) {
+                saveInSharedPrefernce(it[0], it[1])
             }
         }
 
@@ -109,10 +116,6 @@ class IntialDialogFragment : DialogFragment() {
         super.onStart()
        dialog?.setCanceledOnTouchOutside(false)
         dialog?.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-      /*  dialog!!.window?.setLayout(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )*/
     }
 
 

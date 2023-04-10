@@ -19,7 +19,7 @@ class DailyAdapter (private val dailyWeather: List<Daily> , var context: Context
 
     lateinit var binding: DailyViewBinding
 
-
+      var myUtil:MyUtil = MyUtil()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater: LayoutInflater =
@@ -30,17 +30,14 @@ class DailyAdapter (private val dailyWeather: List<Daily> , var context: Context
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var currentDay = dailyWeather.get(position)
-        var day = MyUtil().ConvertToDay(currentDay.dt)
+        var day =myUtil.ConvertToDay(currentDay.dt)
         holder.binding.tvDay.text = day
-        Glide.with(context).load("https://openweathermap.org/img/wn/${currentDay.weather.get(0).icon}@2x.png").into(binding.dayilyImageView)
+        binding.dayilyImageView.setImageResource(myUtil.cheangeIcon(currentDay.weather.get(0).icon))
         holder.binding.tvDayDesc.text =currentDay.weather.get(0).description
-       // holder.binding.tvDailyMaxDegree.text = "/"+currentDay.temp.max.toString()
         var minTemp = String.format("%.0f",currentDay.temp.min)
         var maxTemp = String.format("%.0f",currentDay.temp.max)
-
-        //holder.binding.tvDayMinDegree.text = currentDay.temp.min.toString() +  "/" +currentDay.temp.max.toString()
         holder.binding.tvDayMinDegree.text =minTemp + "" + "/" +""+ maxTemp
-        //tv_daily_max_degree
+
     }
 
     override fun getItemCount(): Int {

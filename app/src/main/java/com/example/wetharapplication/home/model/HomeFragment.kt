@@ -6,12 +6,14 @@ import android.content.SharedPreferences
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.os.RemoteException
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
@@ -27,8 +29,10 @@ import com.example.wetharapplication.network.InternetCheck
 import com.example.wetharapplication.network.WeatherClient
 import com.example.wetharapplication.util.MyUtil
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,10 +49,14 @@ class HomeFragment : Fragment() {
     lateinit var language: String
     lateinit var unites: String
     lateinit var response :MyResponse
+     var myUtil :MyUtil = MyUtil()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         se = activity?.getSharedPreferences("My Shared", MODE_PRIVATE)!!
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.homeFragment)
+
 
 
     }
@@ -71,26 +79,30 @@ class HomeFragment : Fragment() {
         super.onResume()
         isMap = se?.getBoolean("Map", false)!!
 
-      var context: Context = requireContext()
+        var context: Context = requireContext()
         if (isMap) {
             val action = HomeFragmentDirections.homtMap("home")
             Navigation.findNavController(requireView()).navigate(action)
         }
-            lat = se?.getFloat("lat", 31.0f)?.toDouble()!!
-            long = se?.getFloat("long", 31.0f)?.toDouble()!!
-            language = se?.getString("language", "en")!!
-            unites = se?.getString("units", "standard")!!
-            homeFactory = HomeViewModelFactory(Repository.getInstance(WeatherClient.getInstance(), ConcreteLocalSource.getInstance(context)))
+        lat = se?.getFloat("lat", 31.0f)?.toDouble()!!
+        long = se?.getFloat("long", 31.0f)?.toDouble()!!
+        language = se?.getString("language", "en")!!
+        unites = se?.getString("units", "standard")!!
+        homeFactory = HomeViewModelFactory(
+            Repository.getInstance(
+                WeatherClient.getInstance(),
+                ConcreteLocalSource.getInstance(context)
+            )
+        )
+        homeModel = ViewModelProvider(requireActivity(), homeFactory).get(HomeViewModel::class.java)
 
-            homeModel = ViewModelProvider(requireActivity(), homeFactory).get(HomeViewModel::class.java)
-
-        //check internet
-                homeModel.getWeather(lat, long, unites, language)
+        if (InternetCheck.getConnectivity(context) == true) {
 
 
+            homeModel.getWeather(lat, long, unites, language)
             lifecycleScope.launch {
-                homeModel._myResponse.collectLatest { result->
-                    when(result){
+                homeModel._myResponse.collectLatest { result ->
+                    when (result) {
                         is ApiState.Loading -> {
                             binding.progressBar.visibility = View.VISIBLE
                             hideData()
@@ -98,20 +110,51 @@ class HomeFragment : Fragment() {
                         is ApiState.Success -> {
                             binding.progressBar.visibility = View.GONE
                             response = result.data
+                            se.edit().apply {
+                                putString("HomeWeather",Gson().toJson(response))
+                                apply()
+                            }
                             showData()
                             setData()
                         }
-                        else ->{
+                        else -> {
                             binding.progressBar.visibility = View.GONE
-                            val snakbar = Snackbar.make(requireView(), "There is an Erorr , Please check your Network", Snackbar.LENGTH_LONG).setAction("Action", null)
+                            val snakbar = Snackbar.make(
+                                requireView(),
+                                context.resources.getString(R.string.no_internet),
+                                Snackbar.LENGTH_LONG
+                            ).setAction("Action", null)
                             snakbar.show()
                         }
                     }
                 }
             }
-
+        } else {
+            binding.progressBar.visibility = View.GONE
+            var backup = Gson().fromJson(se.getString("HomeWeather",""),MyResponse::class.java)
+            if (se.contains("HomeWeather")){
+                response = backup
+                showData()
+                setData()
+                val snakbar = Snackbar.make(
+                    requireView(),
+                    context.resources.getString(R.string.snakbar_msg),
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null)
+                snakbar.show()
+            }else{
+                hideData()
+                val snakbar = Snackbar.make(
+                    requireView(),
+                    context.resources.getString(R.string.no_internet),
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null)
+                snakbar.show()
+            }
 
         }
+    }
+
 
 
     private fun hideData(){
@@ -147,19 +190,26 @@ class HomeFragment : Fragment() {
     }
 
     private fun setData(){
-        val geocoder = Geocoder(requireContext(), Locale.getDefault())
-        var addressList:List<Address> = geocoder.getFromLocation(response.lat,response.lon,1) as List<Address>
-        if (addressList.size != 0){
-            var area = addressList.get(0).countryName
-            var country = addressList.get(0).adminArea
-            binding.tvCity.text = country +" , "+ area
-        }else{
-            binding.tvCity.text = "Welcome Home"
+        try{
+            val geocoder = Geocoder(requireContext(), Locale.getDefault())
+            var addressList:List<Address> = geocoder.getFromLocation(response.lat,response.lon,1) as List<Address>
+            if (addressList.size != 0){
+                var area = addressList.get(0).countryName
+                var country = addressList.get(0).adminArea
+                binding.tvCity.text = country +" , "+ area
+            }else{
+                binding.tvCity.text =response.timezone
+            }
+        }catch (e :IOException){
+            binding.tvCity.text = response.timezone
+        }catch (e: RemoteException){
+            binding.tvCity.text = response.timezone
         }
+
         binding.tvDescription.text = response.current?.weather?.get(0)?.description
-        var myCurrentDate = MyUtil().convertDataAndTime(response.current?.dt)
+        var myCurrentDate = myUtil.convertDataAndTime(response.current?.dt)
         binding.tvDate.text = myCurrentDate
-        var char = MyUtil().getDegreeUnit(unites , language)
+        var char = myUtil.getDegreeUnit(unites , language)
         var temp = String.format("%.0f", response.current?.temp)
         binding.tvHomedegree.text = temp + char
         binding.tvEditHumidity.text = response.current?.humidity.toString() + " " + "%"
@@ -167,11 +217,10 @@ class HomeFragment : Fragment() {
         binding.tvEditIsabilty.text = response.current?.visibility.toString()+ " " + "m"
         binding.tvEditPressur.text = response.current?.pressure.toString() + " " + "hpa"
         binding.tvEditUv.text = response.current?.uvi.toString()
-        var wChar = MyUtil().getWindSpeedUnit(unites,language)
+        var wChar =myUtil.getWindSpeedUnit(unites,language)
         binding.tvEditWindspeed.text = response.current?.windSpeed.toString() + wChar
-        Glide.with(requireContext())
-            .load("https://openweathermap.org/img/wn/${response.current?.weather?.get(0)?.icon}@2x.png")
-            .into(binding.homeImage)
+        var myimage = myUtil.cheangeIcon(response.current?.weather?.get(0)?.icon)
+        binding.homeImage.setImageResource(myimage)
         hoursList = response.hourly
 
         binding.hourlyRecyclerview.apply {

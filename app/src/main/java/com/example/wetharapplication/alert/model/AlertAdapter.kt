@@ -37,8 +37,10 @@ class AlertAdapter (private val alertsList: List<MyAlert>, var context: Context 
             val yes = context.resources.getString(R.string.delete_accepet)
             val no = context.resources.getString(R.string.delete_refuse)
             val builder = AlertDialog.Builder(context)
-            builder.setMessage(context.resources.getString(R.string.delete_message))
-            builder.setTitle(context.resources.getString(R.string.delete_title))
+            val message = context.resources.getString(R.string.delete_message)
+            builder.setMessage(Html.fromHtml("<font color='#dad9d4'>$message</font>"))
+            val title = context.resources.getString(R.string.delete_title)
+            builder.setTitle(Html.fromHtml("<font color='#dad9d4'>$title</font>"))
             builder.setCancelable(false)
             builder.setPositiveButton(
                 Html.fromHtml("<font color='#dad9d4'>$yes</font>"),
@@ -49,9 +51,7 @@ class AlertAdapter (private val alertsList: List<MyAlert>, var context: Context 
             builder.setNegativeButton(Html.fromHtml("<font color='#dad9d4'>$no</font>"),
                 { dialog: DialogInterface, which: Int -> dialog.cancel() } )
             val alertDialog = builder.create()
-            alertDialog.setOnShowListener {
-                alertDialog.window?.setBackgroundDrawableResource(R.drawable.dialog)
-            }
+            alertDialog.window?.setBackgroundDrawableResource(R.drawable.dialog)
             alertDialog.show()
         }
     }
@@ -61,26 +61,6 @@ class AlertAdapter (private val alertsList: List<MyAlert>, var context: Context 
 
     }
 
-
-    /*    val yes = context.resources.getString(R.string.delete_accepet)
-           val no = context.resources.getString(R.string.delete_refuse)
-           val builder = AlertDialog.Builder(context)
-           builder.setMessage(context.resources.getString(R.string.delete_message))
-           builder.setTitle(context.resources.getString(R.string.delete_title))
-           builder.setCancelable(false)
-           builder.setPositiveButton(Html.fromHtml("<font color='#dad9d4'>$yes</font>"),
-               { dialog: DialogInterface?, which: Int ->
-                    listener.deleteAlert(alert)
-                   Toast.makeText(context, (context.resources.getString(R.string.delete_Toast)), Toast.LENGTH_SHORT).show()
-               })
-           builder.setNegativeButton(Html.fromHtml("<font color='#dad9d4'>$no</font>"),
-               { dialog: DialogInterface, which: Int -> dialog.cancel() } )
-           val alertDialog = builder.create()
-           alertDialog.setOnShowListener {
-               alertDialog.window?.setBackgroundDrawableResource(R.drawable.dialog)
-           }
-           alertDialog.show()
-       }*/
 
 
 }
