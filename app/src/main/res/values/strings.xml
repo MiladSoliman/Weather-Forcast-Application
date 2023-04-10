@@ -5,7 +5,7 @@
     <string name="homeFragment">"Home"</string>
     <string name="favouriteFragment">Favorite</string>
     <string name="settingsFragement">Settings</string>
-    <string name="alertFragement">Settings</string>
+    <string name="alertFragement">Alert</string>
     <string name="tv_location">Location</string>
     <string name="tv_language">Language</string>
     <string name="tv_windSpeed">Wind Speed</string>

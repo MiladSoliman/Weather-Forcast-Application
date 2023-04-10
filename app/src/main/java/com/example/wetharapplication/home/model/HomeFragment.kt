@@ -54,8 +54,7 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         se = activity?.getSharedPreferences("My Shared", MODE_PRIVATE)!!
-        (activity as AppCompatActivity?)?.supportActionBar?.title =
-            requireActivity().getString(R.string.homeFragment)
+
 
 
 
@@ -77,6 +76,8 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        (activity as AppCompatActivity?)?.supportActionBar?.title =
+            requireActivity().getString(R.string.homeFragment)
         isMap = se?.getBoolean("Map", false)!!
 
         var context: Context = requireContext()
