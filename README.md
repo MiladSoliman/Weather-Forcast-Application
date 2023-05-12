@@ -5,8 +5,6 @@ Android Mobile Android Application usnig Kotlin to get the weather conditions, u
 
 
 
-
-
 ## Application Features :
 
 Get your current location weather condition
@@ -26,18 +24,18 @@ Location Permission
 Network Permission
 Overlay Permission
 ## Tools
-MVVM design paterns
-Observer design paterns
-Factory Design paterns
-Coroutines
-Flow
-StateFlow
-Room Database
-Google Map
-Retrofit
-Alarm Manger
-BroadCast Recivier
-Unit testing
+- MVVM design paterns
+- Observer design paterns
+- Factory Design paterns
+- Coroutines
+- Flow
+- StateFlow
+- Room Database
+- Google Map
+- Retrofit
+- Alarm Manger
+- BroadCast Recivier
+- Unit testing
 
 ## SDK Version
 33
